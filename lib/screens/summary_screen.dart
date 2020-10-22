@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SummaryScreen extends StatefulWidget 
-{
+class SummaryScreen extends StatefulWidget {
   @override
   _SummaryScreenState createState() => _SummaryScreenState();
 }
 
-class _SummaryScreenState extends State<SummaryScreen> 
-{
+class _SummaryScreenState extends State<SummaryScreen> {
   @override
-  Widget build(BuildContext context) 
-  {
-    return Container
-    (
-      
-    );
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

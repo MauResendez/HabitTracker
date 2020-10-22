@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User 
-{
+class User {
   final String id;
   final String first_name;
   final String last_name;
@@ -9,8 +8,7 @@ class User
   final String email;
   // final List<Habit> habits;
 
-  User
-  ({
+  User({
     this.id,
     this.first_name,
     this.last_name,

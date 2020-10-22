@@ -6,52 +6,38 @@ import 'package:habittracker/screens/register_screen.dart';
 import 'package:habittracker/screens/main_screen.dart';
 import 'package:habittracker/screens/home_screen.dart';
 
-Future<void> main() async 
-{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget 
-{
-  Widget getScreenId()
-  {
-    return StreamBuilder<User>
-    (
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (BuildContext context, snapshot)
-      {
-        if(snapshot.hasData)
-        {
-          return MainScreen();
-        }
-        else
-        {
-          return LoginScreen();
-        }
-      }
-    );
+class MyApp extends StatelessWidget {
+  Widget getScreenId() {
+    return StreamBuilder<User>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (BuildContext context, snapshot) {
+          if (snapshot.hasData) {
+            return MainScreen();
+          } else {
+            return LoginScreen();
+          }
+        });
   }
 
   @override
-  Widget build(BuildContext context) 
-  {
-    return MaterialApp
-    (
-      title: 'Habit Tracker',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData
-      (
-        primarySwatch: Colors.blue,
-      ),
-      home: getScreenId(),
-      routes: 
-      {
-        LoginScreen.id: (context) => LoginScreen(),
-        RegisterScreen.id: (context) => RegisterScreen(),
-        HomeScreen.id: (context) => HomeScreen(),
-      }
-    );
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        title: 'Habit Tracker',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: getScreenId(),
+        routes: {
+          LoginScreen.id: (context) => LoginScreen(),
+          RegisterScreen.id: (context) => RegisterScreen(),
+          HomeScreen.id: (context) => HomeScreen(),
+        });
   }
 }
