@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "152060221271",
+    "firebase_url": "https://habittracker-c95ab.firebaseio.com",
+    "project_id": "habittracker-c95ab",
+    "storage_bucket": "habittracker-c95ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152060221271:android:109b7386b247b70cc1d012",
+        "android_client_info": {
+          "package_name": "com.example.habittracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152060221271-j5b5iuieu8p79rqvabs4nlhp8jijlsj2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5UUlfjaPhwKG3h9oceJWhT0ftIwyS26c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152060221271-j5b5iuieu8p79rqvabs4nlhp8jijlsj2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

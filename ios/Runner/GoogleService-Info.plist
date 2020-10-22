@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>152060221271-l5j8gpgbudu3j5on0pkk4858equl4r76.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.152060221271-l5j8gpgbudu3j5on0pkk4858equl4r76</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBSjbObCzY1_3MZEaBJPzd9tIlI3pQaWng</string>
+	<key>GCM_SENDER_ID</key>
+	<string>152060221271</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.habittracker</string>
+	<key>PROJECT_ID</key>
+	<string>habittracker-c95ab</string>
+	<key>STORAGE_BUCKET</key>
+	<string>habittracker-c95ab.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:152060221271:ios:24051d8a36268c59c1d012</string>
+	<key>DATABASE_URL</key>
+	<string>https://habittracker-c95ab.firebaseio.com</string>
+</dict>
+</plist>
