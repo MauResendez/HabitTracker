@@ -6,17 +6,13 @@ import 'package:habittracker/services/auth_service.dart';
 import 'create_screen.dart';
 import 'edit_screen.dart';
 
+int total_habits = 5;
+
 class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
-List database = [
-  {"Understand Code", 12, "10:15 2/15/2020"},
-  {"Understand Code", 12, "10:15 2/15/2020"},
-  {"Understand Code", 12, "10:15 2/15/2020"}
-];
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -70,11 +66,12 @@ class _HomeScreenState extends State<HomeScreen>
 class MyHabit extends StatefulWidget 
 {
   //variables show to the User when in the homepage,
+  int id;
   String HabitTitle;
   int HabitTrack;
   String Timecomplete;
   //add any other things leave at 2 for now
-  MyHabit(this.HabitTitle, this.HabitTrack, this.Timecomplete);
+  MyHabit(this.id, this.HabitTitle, this.HabitTrack, this.Timecomplete);
   @override
   _MyHabitState createState() => _MyHabitState();
 }
@@ -140,7 +137,14 @@ class _MyHabitState extends State<MyHabit>
                       style: new TextStyle(fontSize: 35.0),
                     ),
                     Spacer(),
-                    Icon(Icons.timer),
+                    IconButton(
+                        icon: Icon(Icons.check),
+                        onPressed: () {
+                          setState(() {
+                            widget.HabitTrack += 1;
+                            print(widget.HabitTrack);
+                          });
+                        }),
                   ],
                 ),
               )
