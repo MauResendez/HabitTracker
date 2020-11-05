@@ -5,6 +5,7 @@ class Habit {
   String user_id;
   String user_title;
   bool user_isHandicapped;
+  bool user_wantNotifications;
   bool user_isTime;
   Color user_cardColor;
   List user_habitNotif;
