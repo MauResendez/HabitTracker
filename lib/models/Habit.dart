@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Habit {
-  final String user_id;
+  String user_id;
   String user_title;
   bool user_isHandicapped;
   bool user_isTime;
   Color user_cardColor;
-  final List user_habitNotif;
+  List user_habitNotif;
   // time
   // days of the week
   // button color
