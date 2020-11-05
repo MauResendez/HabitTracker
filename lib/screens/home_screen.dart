@@ -4,25 +4,41 @@ import 'package:habittracker/services/auth_service.dart';
 import 'create_screen.dart';
 import 'edit_screen.dart';
 
+int total_habits = 5;
+
 class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-/*List<Map<String, int>> database = [
-    {"taskT": "Understand Code", "taskS": 12,"habitmade": "10:15 2/15/2020"},
-    {"taskT": "Figure out duplication", "taskS": 12,"habitmade": "10:15 2/15/2020"},
-    {"taskT": "Refactor", "taskS": 12,"habitmade": "10:15 2/15/2020"},
-    {"taskT": "Add comments", "taskS": 12,"habitmade": "10:15 2/15/2020"},
-    {"taskT": "commit code", "taskS": 12,"habitmade": "10:15 2/15/2020"},
-    {"taskT": "push to github", "taskS": 12, "habitmade": "10:15 2/15/2020"}
-  ];*/
-
-List database = [
-  {"Understand Code", 12, "10:15 2/15/2020"},
-  {"Understand Code", 12, "10:15 2/15/2020"},
-  {"Understand Code", 12, "10:15 2/15/2020"}
+List<Map<String, dynamic>> database = [
+  {
+    "id": 0,
+    "taskT": "Understand Code",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  },
+  {
+    "id": 1,
+    "taskT": "Figure out duplication",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  },
+  {"id": 2, "taskT": "Refactor", "taskS": 0, "habitmade": "10:15 2/15/2020"},
+  {
+    "id": 3,
+    "taskT": "Add comments",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  },
+  {"id": 4, "taskT": "commit code", "taskS": 0, "habitmade": "10:15 2/15/2020"},
+  {
+    "id": 5,
+    "taskT": "push to github",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  }
 ];
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -30,23 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: ListView(
-        children: <Widget>[
-          Center(
-              child: FlatButton(
-                  onPressed: () => AuthService.logout(),
-                  child: Text("Log Out"))),
-          /*ListView.builder(
-              itemCount: database.length,
-              itemBuilder: (context, i) {
-                return MyHabit(database[i][0].toString(), database[i][1],
-                    database[i][2].toString());
-              }),*/
-          //displaying the 3 Cards as demo
-          MyHabit("HabitTitle5", 12, "10:15 2/15/2020"),
-          MyHabit("HabitTitle6", 12, "10:15 2/20/2020"),
-          MyHabit("HabitTitle7", 12, "10:15 2/27/2020")
-        ],
+          child: ListView.builder(
+        itemCount: database.length,
+        itemBuilder: (context, index) {
+          return MyHabit((database[index]["id"]), (database[index]["taskT"]),
+              (database[index]["taskS"]), (database[index]["habitmade"]));
+        },
       )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -63,11 +68,12 @@ class _HomeScreenState extends State<HomeScreen> {
 //this class makes a a show the two variables taken
 class MyHabit extends StatefulWidget {
   //variables show to the User when in the homepage,
+  int id;
   String HabitTitle;
   int HabitTrack;
   String Timecomplete;
   //add any other things leave at 2 for now
-  MyHabit(this.HabitTitle, this.HabitTrack, this.Timecomplete);
+  MyHabit(this.id, this.HabitTitle, this.HabitTrack, this.Timecomplete);
   @override
   _MyHabitState createState() => _MyHabitState();
 }
@@ -75,6 +81,10 @@ class MyHabit extends StatefulWidget {
 // to display the habit info, title, time completed, amount of times completed.
 //add a edit button for the habit
 class _MyHabitState extends State<MyHabit> {
+  int total;
+  int habits_total;
+  get id => total;
+
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -117,7 +127,14 @@ class _MyHabitState extends State<MyHabit> {
                       style: new TextStyle(fontSize: 35.0),
                     ),
                     Spacer(),
-                    Icon(Icons.timer),
+                    IconButton(
+                        icon: Icon(Icons.check),
+                        onPressed: () {
+                          setState(() {
+                            widget.HabitTrack += 1;
+                            print(widget.HabitTrack);
+                          });
+                        }),
                   ],
                 ),
               )
