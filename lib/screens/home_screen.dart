@@ -8,6 +8,35 @@ import 'edit_screen.dart';
 
 int total_habits = 5;
 
+List<Map<String, dynamic>> database = [
+  {
+    "id": 0,
+    "taskT": "Understand Code",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  },
+  {
+    "id": 1,
+    "taskT": "Figure out duplication",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  },
+  {"id": 2, "taskT": "Refactor", "taskS": 0, "habitmade": "10:15 2/15/2020"},
+  {
+    "id": 3,
+    "taskT": "Add comments",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  },
+  {"id": 4, "taskT": "commit code", "taskS": 0, "habitmade": "10:15 2/15/2020"},
+  {
+    "id": 5,
+    "taskT": "push to github",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  }
+];
+
 class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
   @override
@@ -19,41 +48,23 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 final User user = auth.currentUser;
 final uid = user.uid;
 
-class _HomeScreenState extends State<HomeScreen> 
-{
+class _HomeScreenState extends State<HomeScreen> {
   @override
-  Widget build(BuildContext context) 
-  {
-    return Scaffold
-    (
-      body: StreamBuilder
-      (
-        // stream: FirebaseFirestore.instance.collection('users').collection(uid).snapshots(),
-        stream: FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
-        builder: (context, snapshot)
-        {
-          if(!snapshot.hasData)
-          {
-            return Text('Loading data. Please wait...');
-          }
-          return Column
-          (
-            children: <Widget>
-            [
-              Text(snapshot.data['email']),
-              Text(snapshot.data['username']),
-            ],
-          );
-        }
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ListView.builder(
+          itemCount: database.length,
+          itemBuilder: (context, index) {
+            return MyHabit((database[index]["id"]), (database[index]["taskT"]),
+                (database[index]["taskS"]), (database[index]["habitmade"]));
+          },
+        ),
       ),
-      floatingActionButton: FloatingActionButton
-      (
-        onPressed: () 
-        {
-          Navigator.push
-          (
-              context, MaterialPageRoute(builder: (context) => CreateScreen())
-          );
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CreateScreen()));
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.blue,
@@ -63,8 +74,7 @@ class _HomeScreenState extends State<HomeScreen>
 }
 
 //this class makes a a show the two variables taken
-class MyHabit extends StatefulWidget 
-{
+class MyHabit extends StatefulWidget {
   //variables show to the User when in the homepage,
   int id;
   String HabitTitle;
@@ -78,52 +88,36 @@ class MyHabit extends StatefulWidget
 
 // to display the habit info, title, time completed, amount of times completed.
 //add a edit button for the habit
-class _MyHabitState extends State<MyHabit> 
-{
+class _MyHabitState extends State<MyHabit> {
   @override
-  Widget build(BuildContext context) 
-  {
-    return new Container
-    (
-      child: Card
-      (
-        child: Padding
-        (
+  Widget build(BuildContext context) {
+    return new Container(
+      child: Card(
+        child: Padding(
           padding: const EdgeInsets.all(5.0),
-          child: Column
-          (
-            children: <Widget>
-            [
-              Padding
-              (
+          child: Column(
+            children: <Widget>[
+              Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                child: Row(children: <Widget>
-                [
-                  Text
-                  (
+                child: Row(children: <Widget>[
+                  Text(
                     widget.HabitTitle,
                     style: new TextStyle(fontSize: 30.0),
                   ),
                   Spacer(),
-                  IconButton
-                  (
+                  IconButton(
                       icon: Icon(Icons.edit),
-                      onPressed: () 
-                      {
-                        Navigator.push
-                        (
+                      onPressed: () {
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EditScreen())
-                        );
+                                builder: (context) => EditScreen()));
                       })
                 ]),
               ),
-              Padding
-              (
+              Padding(
                 padding: const EdgeInsets.only(top: 4.0, bottom: 80.0),
-                child: Row(children: <Widget>
-                [
+                child: Row(children: <Widget>[
                   Text("${widget.Timecomplete}"),
                   Spacer(),
                 ]),
