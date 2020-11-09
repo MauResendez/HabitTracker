@@ -14,35 +14,28 @@ final uid = user.uid;
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
-  Widget build(BuildContext context) 
-  {
-    return Scaffold
-    (
-      body: StreamBuilder
-      (
-        stream: FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
-        builder: (context, snapshot)
-        {
-          if(!snapshot.hasData)
-          {
-            return Text('Loading data. Please wait...');
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder(
+        stream:
+            FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: Text('Loading data. Please wait...'),
+            );
           }
-          return Column
-          (
+          return Column(
             // children: <Widget>
             // [
             //   Text(snapshot.data['email']),
             //   Text(snapshot.data['username']),
             // ],
-            
-            children: <Widget>
-            [
-              Container
-              (
-                  decoration: BoxDecoration
-                  (
-                      gradient: LinearGradient(
 
+            children: <Widget>[
+              Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [Colors.blue, Colors.green[50]])),
@@ -166,8 +159,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )),
               Container(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 30.0, horizontal: 16.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,

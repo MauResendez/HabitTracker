@@ -119,9 +119,9 @@ class _MyHabitState extends State<MyHabit> {
                 padding: const EdgeInsets.only(top: 4.0, bottom: 80.0),
                 child: Row(children: <Widget>[
                   Text("${widget.Timecomplete}"),
-                  Spacer(),
                 ]),
               ),
+              Text("we want to add a weekly calender, showing complete days"),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                 child: Row(
@@ -133,6 +133,8 @@ class _MyHabitState extends State<MyHabit> {
                     Spacer(),
                     IconButton(
                         icon: Icon(Icons.check),
+                        iconSize: 30,
+                        color: Colors.blue,
                         onPressed: () {
                           setState(() {
                             widget.HabitTrack += 1;

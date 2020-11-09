@@ -33,7 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Text("Habit Tracker",
                   style: TextStyle(
-                      color: Colors.red, fontSize: 60, fontFamily: 'Lobster')),
+                      color: Colors.blue[600],
+                      fontSize: 60,
+                      fontFamily: 'Lobster')),
               Form(
                 key: formKey,
                 child: Padding(
