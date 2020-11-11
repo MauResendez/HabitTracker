@@ -5,34 +5,38 @@ import 'package:habittracker/services/auth_service.dart';
 
 import 'create_screen.dart';
 import 'edit_screen.dart';
+import 'habit_summary.dart';
 
-int total_habits = 5;
+int total_habits = 0;
+String habitname;
+Key habitID;
+int total_complete;
 
 List<Map<String, dynamic>> database = [
   {
     "id": 0,
     "taskT": "Understand Code",
-    "taskS": 0,
+    "taskS": 15,
     "habitmade": "10:15 2/15/2020"
   },
   {
     "id": 1,
     "taskT": "Figure out duplication",
-    "taskS": 0,
+    "taskS": 20,
     "habitmade": "10:15 2/15/2020"
   },
   {"id": 2, "taskT": "Refactor", "taskS": 0, "habitmade": "10:15 2/15/2020"},
   {
     "id": 3,
     "taskT": "Add comments",
-    "taskS": 0,
+    "taskS": 35,
     "habitmade": "10:15 2/15/2020"
   },
   {"id": 4, "taskT": "commit code", "taskS": 0, "habitmade": "10:15 2/15/2020"},
   {
     "id": 5,
     "taskT": "push to github",
-    "taskS": 0,
+    "taskS": 50,
     "habitmade": "10:15 2/15/2020"
   }
 ];
@@ -56,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView.builder(
           itemCount: database.length,
           itemBuilder: (context, index) {
+            total_habits += 1;
             return MyHabit((database[index]["id"]), (database[index]["taskT"]),
                 (database[index]["taskS"]), (database[index]["habitmade"]));
           },
@@ -76,12 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
 //this class makes a a show the two variables taken
 class MyHabit extends StatefulWidget {
   //variables show to the User when in the homepage,
-  int id;
+  int _id;
   String HabitTitle;
   int HabitTrack;
   String Timecomplete;
   //add any other things leave at 2 for now
-  MyHabit(this.id, this.HabitTitle, this.HabitTrack, this.Timecomplete);
+  MyHabit(this._id, this.HabitTitle, this.HabitTrack, this.Timecomplete);
   @override
   _MyHabitState createState() => _MyHabitState();
 }
@@ -119,6 +124,19 @@ class _MyHabitState extends State<MyHabit> {
                 padding: const EdgeInsets.only(top: 4.0, bottom: 80.0),
                 child: Row(children: <Widget>[
                   Text("${widget.Timecomplete}"),
+                  Spacer(),
+                  IconButton(
+                      icon: Icon(Icons.list),
+                      onPressed: () {
+                        // save habit info for next page
+                        habitname = widget.HabitTitle;
+                        total_complete = widget.HabitTrack;
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HabitSummary()));
+                      })
                 ]),
               ),
               Text("we want to add a weekly calender, showing complete days"),
