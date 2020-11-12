@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habittracker/services/auth_service.dart';
 
+import 'calendar_screen.dart';
 import 'create_screen.dart';
 import 'edit_screen.dart';
 import 'habit_summary.dart';
@@ -17,27 +18,27 @@ List<Map<String, dynamic>> database = [
     "id": 0,
     "taskT": "Understand Code",
     "taskS": 15,
-    "habitmade": "10:15 2/15/2020"
+    "habitmade": "10:15 11/15/2020"
   },
   {
     "id": 1,
     "taskT": "Figure out duplication",
     "taskS": 20,
-    "habitmade": "10:15 2/15/2020"
+    "habitmade": "10:15 11/12/2020"
   },
   {"id": 2, "taskT": "Refactor", "taskS": 0, "habitmade": "10:15 2/15/2020"},
   {
     "id": 3,
     "taskT": "Add comments",
     "taskS": 35,
-    "habitmade": "10:15 2/15/2020"
+    "habitmade": "10:15 11/13/2020"
   },
   {"id": 4, "taskT": "commit code", "taskS": 0, "habitmade": "10:15 2/15/2020"},
   {
     "id": 5,
     "taskT": "push to github",
     "taskS": 50,
-    "habitmade": "10:15 2/15/2020"
+    "habitmade": "10:15 11/15/2020"
   }
 ];
 
@@ -119,6 +120,14 @@ class _MyHabitState extends State<MyHabit> {
                                 builder: (context) => EditScreen()));
                       })
                 ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+                child: Container(
+                  //weekly display
+                  margin: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: null, //display weekly calender
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 4.0, bottom: 80.0),

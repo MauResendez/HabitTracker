@@ -5,17 +5,6 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
-/*class CalendarScreen extends StatefulWidget {
-  @override
-  _CalendarScreenState createState() => _CalendarScreenState();
-}
-
-class _CalendarScreenState extends State<CalendarScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}*/
 class CalendarScreen extends StatefulWidget {
   @override
   _CalenderScreenState createState() => new _CalenderScreenState();
@@ -24,16 +13,17 @@ class CalendarScreen extends StatefulWidget {
 class _CalenderScreenState extends State<CalendarScreen> {
   //this calender widget has only a default display, for our project we are going to add the displays in color coded
   // habits for our user to see the completion in that day. al i need to add is the list displaying items within the proper dates
-  //
+  //https://pub.dev/packages/flutter_calendar_carousel
 
   //current data for main calender
   DateTime _currentDate = DateTime(2020, 11, 11);
   //current data for weekly calender
   DateTime _currentDate2 = DateTime(2020, 11, 11);
+
   String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 11, 11));
   //gives the research date display
   DateTime _targetDateTime = DateTime(2020, 11, 11);
-//  List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
+// Let to find what is for?????? List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
         color: Colors.white,
@@ -45,11 +35,13 @@ class _CalenderScreenState extends State<CalendarScreen> {
     ),
   );
 
+  //habits are the events from this API, displaying the dates
   EventList<Event> _markedDateMap = new EventList<Event>(
     events: {
       new DateTime(2019, 2, 10): [
+        //of events are going to be the habits times to take, just upload the info into the variables required.
         new Event(
-          date: new DateTime(2019, 2, 10),
+          date: new DateTime(2020, 11, 13),
           title: 'Event 1',
           icon: _eventIcon,
           dot: Container(
@@ -60,12 +52,12 @@ class _CalenderScreenState extends State<CalendarScreen> {
           ),
         ),
         new Event(
-          date: new DateTime(2019, 2, 10),
+          date: new DateTime(2020, 11, 9),
           title: 'Event 2',
           icon: _eventIcon,
         ),
         new Event(
-          date: new DateTime(2019, 2, 10),
+          date: new DateTime(2020, 11, 10),
           title: 'Event 3',
           icon: _eventIcon,
         ),
@@ -78,25 +70,27 @@ class _CalenderScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     /// Add more events to _markedDateMap EventList
+    /// i would have a list of records with the dates in this month to display on calender
+
     _markedDateMap.add(
-        new DateTime(2019, 2, 25),
+        new DateTime(2020, 11, 1),
         new Event(
-          date: new DateTime(2019, 2, 25),
+          date: new DateTime(2020, 11, 13),
           title: 'Event 5',
           icon: _eventIcon,
         ));
 
     _markedDateMap.add(
-        new DateTime(2019, 2, 10),
+        new DateTime(2020, 11, 1),
         new Event(
-          date: new DateTime(2019, 2, 10),
+          date: new DateTime(2020, 11, 10),
           title: 'Event 4',
           icon: _eventIcon,
         ));
 
     _markedDateMap.addAll(new DateTime(2019, 2, 11), [
       new Event(
-        date: new DateTime(2019, 2, 11),
+        date: new DateTime(2020, 11, 11),
         title: 'Event 1',
         icon: _eventIcon,
       ),
@@ -186,13 +180,12 @@ class _CalenderScreenState extends State<CalendarScreen> {
       todayTextStyle: TextStyle(
         color: Colors.blue,
       ),
-      // markedDateShowIcon: true,
-      // markedDateIconMaxShown: 2,
-      // markedDateIconBuilder: (event) {
-      //   return event.icon;
-      // },
-      // markedDateMoreShowTotal:
-      //     true,
+      markedDateShowIcon: true,
+      markedDateIconMaxShown: 2,
+      markedDateIconBuilder: (event) {
+        return event.icon;
+      },
+      markedDateMoreShowTotal: true,
       todayButtonColor: Colors.yellow,
       selectedDayTextStyle: TextStyle(
         color: Colors.yellow,
@@ -229,6 +222,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
             children: <Widget>[
               //custom icon
               Container(
+                //weekly display
                 margin: EdgeInsets.symmetric(horizontal: 16.0),
                 child: _calendarCarousel,
               ), // This trailing comma makes auto-formatting nicer for build methods.
