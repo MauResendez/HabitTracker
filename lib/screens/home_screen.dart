@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-//this class makes a a show the two variables taken
+//this class makes a a show the three variables taken
 class MyHabit extends StatefulWidget {
   //variables show to the User when in the homepage,
   int _id;

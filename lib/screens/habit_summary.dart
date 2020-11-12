@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//need to add the home App bar for this  page layout
+
 class HabitSummary extends StatefulWidget {
   @override
   _HabitSummary createState() => _HabitSummary();
