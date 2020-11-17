@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habittracker/services/auth_service.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import 'calendar_screen.dart';
 import 'create_screen.dart';
@@ -42,7 +43,8 @@ List<Map<String, dynamic>> database = [
   }
 ];
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget 
+{
   static final String id = 'home_screen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -53,19 +55,62 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 final User user = auth.currentUser;
 final uid = user.uid;
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> 
+{
+  logout() 
+  {
+    AuthService.logout();
+  }
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ListView.builder(
-          itemCount: database.length,
-          itemBuilder: (context, index) {
-            total_habits += 1;
-            return MyHabit((database[index]["id"]), (database[index]["taskT"]),
-                (database[index]["taskS"]), (database[index]["habitmade"]));
-          },
-        ),
+  Widget build(BuildContext context) 
+  {
+    return Scaffold
+    (
+      body: StreamBuilder
+      (
+        stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).snapshots(),
+        builder: (context, snapshot)
+        {
+          if(!snapshot.hasData)
+          {
+            return CircularProgressIndicator(backgroundColor: Colors.black);
+          }
+
+          return ListView.builder
+          (
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index)
+            {
+              DocumentSnapshot doc = snapshot.data.documents[index];
+              return ListTile
+              (
+                leading: Icon(Icons.schedule, size: 40, color: Colors.blue),
+                // leading: CheckboxListTile(value: doc["isComplete"], onChanged: (input) => doc.reference.update({"isComplete": input}), controlAffinity: ListTileControlAffinity.leading),
+                title: Text(doc["Title"]),
+                subtitle: Text
+                (
+                  'Monday, Wednesday, Friday'
+                ),
+                trailing: Wrap
+                (
+                  spacing: 12, // space between two icons
+                  children: <Widget>
+                  [
+                    IconButton(icon: Icon(Icons.edit), onPressed: () 
+                    {
+
+                    }),
+                    IconButton(icon: Icon(Icons.delete), onPressed: ()
+                    {
+                      FirebaseFirestore.instance.collection('habits').doc(doc.id).delete();
+                    }),
+                  ],
+                ),
+              );
+            }
+          );
+        }
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -79,102 +124,3 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-//this class makes a a show the three variables taken
-class MyHabit extends StatefulWidget {
-  //variables show to the User when in the homepage,
-  int _id;
-  String HabitTitle;
-  int HabitTrack;
-  String Timecomplete;
-  //add any other things leave at 2 for now
-  MyHabit(this._id, this.HabitTitle, this.HabitTrack, this.Timecomplete);
-  @override
-  _MyHabitState createState() => _MyHabitState();
-}
-
-// to display the habit info, title, time completed, amount of times completed.
-//add a edit button for the habit
-class _MyHabitState extends State<MyHabit> {
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                child: Row(children: <Widget>[
-                  Text(
-                    widget.HabitTitle,
-                    style: new TextStyle(fontSize: 30.0),
-                  ),
-                  Spacer(),
-                  IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditScreen()));
-                      })
-                ]),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
-                child: Container(
-                  //weekly display
-                  margin: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: null, //display weekly calender
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 4.0, bottom: 80.0),
-                child: Row(children: <Widget>[
-                  Text("${widget.Timecomplete}"),
-                  Spacer(),
-                  IconButton(
-                      icon: Icon(Icons.list),
-                      onPressed: () {
-                        // save habit info for next page
-                        habitname = widget.HabitTitle;
-                        total_complete = widget.HabitTrack;
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HabitSummary()));
-                      })
-                ]),
-              ),
-              Text("we want to add a weekly calender, showing complete days"),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      "${widget.HabitTrack}",
-                      style: new TextStyle(fontSize: 35.0),
-                    ),
-                    Spacer(),
-                    IconButton(
-                        icon: Icon(Icons.check),
-                        iconSize: 30,
-                        color: Colors.blue,
-                        onPressed: () {
-                          setState(() {
-                            widget.HabitTrack += 1;
-                            print(widget.HabitTrack);
-                          });
-                        }),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:habittracker/screens/register_screen.dart';
 import 'package:habittracker/services/auth_service.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget 
+{
   static final String id = 'login_screen';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> 
+{
   final formKey = GlobalKey<FormState>();
   String email, password;
 
-  submit() {
+  submit() 
+  {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       AuthService.login(email, password);
@@ -21,59 +24,64 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height:
-              MediaQuery.of(context).size.height, // Height of the entire screen
-          child: Column(
+  Widget build(BuildContext context) 
+  {
+    return Scaffold
+    (
+      body: SingleChildScrollView
+      (
+        child: Container
+        (
+          height: MediaQuery.of(context).size.height, // Height of the entire screen
+          child: Column
+          (
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text("Habit Tracker",
-                  style: TextStyle(
-                      color: Colors.blue[600],
-                      fontSize: 60,
-                      fontFamily: 'Lobster')),
-              Form(
+            children: 
+            [
+              Text("Habit Tracker", style: TextStyle(color: Colors.red, fontSize: 60, fontFamily: 'Lobster')),
+              Form
+              (
                 key: formKey,
-                child: Padding(
+                child: Padding
+                (
                   padding: const EdgeInsets.all(50.0),
-                  child: Column(
+                  child: Column
+                  (
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextFormField(
+                    children: 
+                    [
+                      TextFormField
+                      (
                         decoration: InputDecoration(labelText: 'Email'),
-                        validator: (input) =>
-                            !input.contains('@') || !input.isNotEmpty
-                                ? 'Please enter a valid email'
-                                : null,
-                        onSaved: (input) => email = input,
+                        validator: (input) => !input.contains('@') || !input.isNotEmpty ? 'Please enter a valid email' : null,
+                        onChanged: (input) => email = input,
                       ),
-                      TextFormField(
+                      TextFormField
+                      (
                         decoration: InputDecoration(labelText: 'Password'),
-                        validator: (input) => !input.isNotEmpty
-                            ? 'Please enter a valid password'
-                            : null,
-                        onSaved: (input) => password = input,
+                        validator: (input) => !input.isNotEmpty ? 'Please enter a valid password' : null,
+                        onChanged: (input) => password = input,
                         obscureText: true,
                       ),
                       SizedBox(height: 15.0),
-                      FlatButton(
+                      FlatButton
+                      (
                           onPressed: submit,
                           color: Colors.red,
-                          child: Text(
+                          child: Text
+                          (
                             "Login",
                             style: TextStyle(color: Colors.white, fontSize: 17),
-                          )),
-                      Padding(
+                          )
+                      ),
+                      Padding
+                      (
                         padding: const EdgeInsets.only(top: 10),
-                        child: GestureDetector(
-                            onTap: () =>
-                                Navigator.pushNamed(context, RegisterScreen.id),
-                            child:
-                                Text("Don't have an account, register here")),
+                        child: GestureDetector
+                        (
+                            onTap: () => Navigator.pushNamed(context, RegisterScreen.id),
+                            child: Text("Don't have an account, register here")),
                       )
                     ],
                   ),
