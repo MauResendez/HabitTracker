@@ -21,6 +21,7 @@ class _EditScreenState extends State<EditScreen> {
               hintText: 'Name Your Habit',
               labelText: 'Habit *'),
         ),
+        //Hadicapped bool to activate noise if primary
         CheckboxListTile(
             title: Text("Handicapped"),
             value: existingHadicapped,
@@ -29,6 +30,7 @@ class _EditScreenState extends State<EditScreen> {
                 existingHadicapped = value;
               });
             }),
+        //Notification
         CheckboxListTile(
             title: Text("Notifications"),
             value: existingNotifications,
