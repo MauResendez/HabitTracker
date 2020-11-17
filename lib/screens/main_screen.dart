@@ -52,17 +52,13 @@ class _MainScreenState extends State<MainScreen> {
             pageController.animateToPage(index,
                 duration: Duration(milliseconds: 200), curve: Curves.easeIn);
           },
-          activeColor: Colors.red,
+          activeColor: Colors.blue,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home, size: 32.0)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.check_circle_outline, size: 32.0)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_today, size: 32.0)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.notifications, size: 32.0)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle, size: 32.0)),
+            BottomNavigationBarItem(icon: Icon(Icons.check_circle_outline, size: 32.0)),
+            BottomNavigationBarItem(icon: Icon(Icons.calendar_today, size: 32.0)),
+            BottomNavigationBarItem(icon: Icon(Icons.notifications, size: 32.0)),
+            BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 32.0)),
           ]),
     );
   }
