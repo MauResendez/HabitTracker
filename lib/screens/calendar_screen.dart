@@ -23,7 +23,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
   String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 11, 11));
   //gives the research date display
   DateTime _targetDateTime = DateTime(2020, 11, 11);
-// Let to find what is for?????? List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
+//List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
         color: Colors.white,
@@ -38,10 +38,10 @@ class _CalenderScreenState extends State<CalendarScreen> {
   //habits are the events from this API, displaying the dates
   EventList<Event> _markedDateMap = new EventList<Event>(
     events: {
-      new DateTime(2019, 2, 10): [
+      new DateTime(2020, 11, 10): [
         //of events are going to be the habits times to take, just upload the info into the variables required.
         new Event(
-          date: new DateTime(2020, 11, 13),
+          date: new DateTime(2020, 11, 10),
           title: 'Event 1',
           icon: _eventIcon,
           dot: Container(
@@ -52,7 +52,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
           ),
         ),
         new Event(
-          date: new DateTime(2020, 11, 9),
+          date: new DateTime(2020, 11, 10),
           title: 'Event 2',
           icon: _eventIcon,
         ),
@@ -71,7 +71,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
   void initState() {
     /// Add more events to _markedDateMap EventList
     /// i would have a list of records with the dates in this month to display on calender
-
+    ///  check if add works for different events
     _markedDateMap.add(
         new DateTime(2020, 11, 1),
         new Event(

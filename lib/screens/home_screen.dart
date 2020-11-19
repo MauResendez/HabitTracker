@@ -15,26 +15,42 @@ int total_complete;
 
 List<Map<String, dynamic>> database = [
   {
+    "priority": false,
     "id": 0,
     "taskT": "Understand Code",
     "taskS": 15,
     "habitmade": "10:15 11/15/2020"
   },
   {
+    "priority": false,
     "id": 1,
     "taskT": "Figure out duplication",
     "taskS": 20,
     "habitmade": "10:15 11/12/2020"
   },
-  {"id": 2, "taskT": "Refactor", "taskS": 0, "habitmade": "10:15 2/15/2020"},
   {
+    "priority": false,
+    "id": 2,
+    "taskT": "Refactor",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  },
+  {
+    "priority": true,
     "id": 3,
     "taskT": "Add comments",
     "taskS": 35,
     "habitmade": "10:15 11/13/2020"
   },
-  {"id": 4, "taskT": "commit code", "taskS": 0, "habitmade": "10:15 2/15/2020"},
   {
+    "priority": false,
+    "id": 4,
+    "taskT": "commit code",
+    "taskS": 0,
+    "habitmade": "10:15 2/15/2020"
+  },
+  {
+    "priority": false,
     "id": 5,
     "taskT": "push to github",
     "taskS": 50,
@@ -62,8 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
           itemCount: database.length,
           itemBuilder: (context, index) {
             total_habits += 1;
-            return MyHabit((database[index]["id"]), (database[index]["taskT"]),
-                (database[index]["taskS"]), (database[index]["habitmade"]));
+            return MyHabit(
+                (database[index]["priority"]),
+                (database[index]["id"]),
+                (database[index]["taskT"]),
+                (database[index]["taskS"]),
+                (database[index]["habitmade"]));
           },
         ),
       ),
@@ -82,12 +102,14 @@ class _HomeScreenState extends State<HomeScreen> {
 //this class makes a a show the three variables taken
 class MyHabit extends StatefulWidget {
   //variables show to the User when in the homepage,
+  bool _priority;
   int _id;
   String HabitTitle;
   int HabitTrack;
   String Timecomplete;
   //add any other things leave at 2 for now
-  MyHabit(this._id, this.HabitTitle, this.HabitTrack, this.Timecomplete);
+  MyHabit(this._priority, this._id, this.HabitTitle, this.HabitTrack,
+      this.Timecomplete);
   @override
   _MyHabitState createState() => _MyHabitState();
 }
@@ -106,6 +128,7 @@ class _MyHabitState extends State<MyHabit> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
                 child: Row(children: <Widget>[
+                  Checkbox(value: true, onChanged: null),
                   Text(
                     widget.HabitTitle,
                     style: new TextStyle(fontSize: 30.0),
@@ -166,6 +189,9 @@ class _MyHabitState extends State<MyHabit> {
                           setState(() {
                             widget.HabitTrack += 1;
                             print(widget.HabitTrack);
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => leadDialog);
                           });
                         }),
                   ],
@@ -178,3 +204,20 @@ class _MyHabitState extends State<MyHabit> {
     );
   }
 }
+
+Dialog leadDialog = Dialog(
+  child: Container(
+    height: 300.0,
+    width: 360.0,
+    color: Colors.white,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          'CONGRATULATION',
+          style: TextStyle(color: Colors.black, fontSize: 22.0),
+        ),
+      ],
+    ),
+  ),
+);
