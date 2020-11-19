@@ -72,6 +72,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
     /// Add more events to _markedDateMap EventList
     /// i would have a list of records with the dates in this month to display on calender
     ///  check if add works for different events
+    /// create a for loop for our habit notifications, and complete status
     _markedDateMap.add(
         new DateTime(2020, 11, 1),
         new Event(
@@ -112,16 +113,18 @@ class _CalenderScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     /// Example with custom icon
     _calendarCarousel = CalendarCarousel<Event>(
+      //for now shows habit name.
       onDayPressed: (DateTime date, List<Event> events) {
         this.setState(() => _currentDate = date);
         events.forEach((event) => print(event.title));
+        //make a pop up of events happening on that day
       },
       weekendTextStyle: TextStyle(
         color: Colors.red,
       ),
       thisMonthDayBorderColor: Colors.grey,
 //          weekDays: null, /// for pass null when you do not want to render weekDays
-      headerText: 'Custom Header',
+      headerText: 'Your Routine',
       weekFormat: true,
       markedDatesMap: _markedDateMap,
       height: 200.0,
@@ -156,6 +159,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
       onDayPressed: (DateTime date, List<Event> events) {
         this.setState(() => _currentDate2 = date);
         events.forEach((event) => print(event.title));
+        //make display of habit on pop up.
       },
       daysHaveCircularBorder: true,
       showOnlyCurrentMonthDate: false,
@@ -164,7 +168,6 @@ class _CalenderScreenState extends State<CalendarScreen> {
       ),
       thisMonthDayBorderColor: Colors.grey,
       weekFormat: false,
-//      firstDayOfWeek: 4,
       markedDatesMap: _markedDateMap,
       height: 420.0,
       selectedDateTime: _currentDate2,
@@ -206,6 +209,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
           _currentMonth = DateFormat.yMMM().format(_targetDateTime);
         });
       },
+      //when pressing the date to display
       onDayLongPressed: (DateTime date) {
         print('long pressed date $date');
       },
