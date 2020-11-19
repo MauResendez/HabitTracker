@@ -102,13 +102,13 @@ class _HomeScreenState extends State<HomeScreen> {
 //this class makes a a show the three variables taken
 class MyHabit extends StatefulWidget {
   //variables show to the User when in the homepage,
-  bool _priority;
-  int _id;
+  bool Priority;
+  int Id;
   String HabitTitle;
   int HabitTrack;
   String Timecomplete;
   //add any other things leave at 2 for now
-  MyHabit(this._priority, this._id, this.HabitTitle, this.HabitTrack,
+  MyHabit(this.Priority, this.Id, this.HabitTitle, this.HabitTrack,
       this.Timecomplete);
   @override
   _MyHabitState createState() => _MyHabitState();
@@ -128,7 +128,7 @@ class _MyHabitState extends State<MyHabit> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
                 child: Row(children: <Widget>[
-                  Checkbox(value: true, onChanged: null),
+                  Checkbox(value: widget.Priority, onChanged: null),
                   Text(
                     widget.HabitTitle,
                     style: new TextStyle(fontSize: 30.0),
