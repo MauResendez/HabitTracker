@@ -17,28 +17,28 @@ List<Map<String, dynamic>> database = [
   {
     "priority": false,
     "id": 0,
-    "taskT": "Understand Code",
+    "taskT": "Medication",
     "taskS": 15,
     "habitmade": "10:15 11/15/2020"
   },
   {
     "priority": false,
     "id": 1,
-    "taskT": "Figure out duplication",
+    "taskT": "Reading",
     "taskS": 20,
     "habitmade": "10:15 11/12/2020"
   },
   {
     "priority": false,
     "id": 2,
-    "taskT": "Refactor",
+    "taskT": "Water Time",
     "taskS": 0,
     "habitmade": "10:15 2/15/2020"
   },
   {
     "priority": true,
     "id": 3,
-    "taskT": "Add comments",
+    "taskT": "Exercise",
     "taskS": 35,
     "habitmade": "10:15 11/13/2020"
   },
