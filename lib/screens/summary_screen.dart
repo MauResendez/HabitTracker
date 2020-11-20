@@ -22,10 +22,27 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: AnimatedCircularChart(
-        size: _size,
-        initialChartData: _pieData[0],
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              AnimatedCircularChart(
+                size: _size,
+                initialChartData: _pieData[0],
+              ),
+              Column(
+                children: <Widget>[
+                  Text("Completion 42"),
+                  Text("Active Habits 2")
+                ],
+              )
+            ],
+          ),
+          Text("Habit List for Today")
+        ],
       ),
     );
   }
