@@ -109,14 +109,17 @@ class _CalenderScreenState extends State<CalendarScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
     /// Example with custom icon
     _calendarCarousel = CalendarCarousel<Event>(
-      onDayPressed: (DateTime date, List<Event> events) {
+      onDayPressed: (DateTime date, List<Event> events) 
+      {
         this.setState(() => _currentDate = date);
         events.forEach((event) => print(event.title));
       },
-      weekendTextStyle: TextStyle(
+      weekendTextStyle: TextStyle
+      (
         color: Colors.red,
       ),
       thisMonthDayBorderColor: Colors.grey,

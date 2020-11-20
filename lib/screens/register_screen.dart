@@ -43,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: 
             [
-              Text("Habit Tracker", style: TextStyle(fontSize: 60, fontFamily: 'Lobster')),
+              Text("Habit Tracker", style: TextStyle(color: Colors.blue, fontSize: 60, fontFamily: 'Lobster')),
               Form
               (
                 key: formKey,

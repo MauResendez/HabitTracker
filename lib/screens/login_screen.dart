@@ -17,7 +17,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   submit() 
   {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState.validate()) 
+    {
       formKey.currentState.save();
       AuthService.login(email, password);
     }
@@ -33,13 +34,13 @@ class _LoginScreenState extends State<LoginScreen>
         child: Container
         (
           height: MediaQuery.of(context).size.height, // Height of the entire screen
-          child: Column
+          child: Column // Uses a column widget that line up the children widgets vertically
           (
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center, // Makes the column centered vertically
+            crossAxisAlignment: CrossAxisAlignment.center, // Makes the column centered horizontally
             children: 
             [
-              Text("Habit Tracker", style: TextStyle(color: Colors.red, fontSize: 60, fontFamily: 'Lobster')),
+              Text("Habit Tracker", style: TextStyle(color: Colors.blue, fontSize: 60, fontFamily: 'Lobster')), // 
               Form
               (
                 key: formKey,
@@ -54,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen>
                       TextFormField
                       (
                         decoration: InputDecoration(labelText: 'Email'),
-                        validator: (input) => !input.contains('@') || !input.isNotEmpty ? 'Please enter a valid email' : null,
+                        validator: (input) => !input.contains('@') && !input.isNotEmpty ? 'Please enter a valid email' : null,
                         onChanged: (input) => email = input,
                       ),
                       TextFormField

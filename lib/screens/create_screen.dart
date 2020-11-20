@@ -58,10 +58,14 @@ class _CreateScreenState extends State<CreateScreen>
       "wantNotifcations": wantNotifications,
       "Days": days,
       "UserID": uid,
-      "isComplete": false
+      "isComplete": false,
+      "isCurrent": false,
+      "dailyCompletions": 0,
+      "weeklyCompletions": 0,
+      "monthlyCompletions": 0,
+      "yearlyCompletions": 0,
+      "streak": 0
     };
-
-     // !(forMonday == false && forTuesday == false && forWednesday == false && forThursday == false && forFriday == false && forSaturday == false && forSunday == false)
 
     if(formKey.currentState.validate())
     {
