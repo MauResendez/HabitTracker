@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(icon: Icon(Icons.home, size: 32.0)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.check_circle_outline, size: 32.0)),
-            BottomNavigationBarItem(icon: Icon(Icons.list, size: 32.0)),
+            BottomNavigationBarItem(icon: Icon(Icons.pie_chart, size: 32.0)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.calendar_today, size: 32.0)),
             BottomNavigationBarItem(
