@@ -3,23 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:string_validator/string_validator.dart';
 
-class CreateScreen extends StatefulWidget 
-{
+class CreateScreen extends StatefulWidget {
   @override
   _CreateScreenState createState() => _CreateScreenState();
 }
 
-void initState()
-{
-  
-}
+void initState() {}
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User user = auth.currentUser;
 final uid = user.uid;
 
-class _CreateScreenState extends State<CreateScreen> 
-{
+class _CreateScreenState extends State<CreateScreen> {
   bool isTimeBased = false;
   bool isBlind = false;
   bool isDeaf = false;
@@ -36,10 +31,8 @@ class _CreateScreenState extends State<CreateScreen>
   final firestore = FirebaseFirestore.instance;
   final formKey = GlobalKey<FormState>();
 
-  createHabit()
-  {
-    Map<String, dynamic> days = 
-    {
+  createHabit() {
+    Map<String, dynamic> days = {
       "Monday": forMonday,
       "Tuesday": forTuesday,
       "Wednesday": forWednesday,
@@ -49,8 +42,7 @@ class _CreateScreenState extends State<CreateScreen>
       "Sunday": forSunday,
     };
 
-    Map<String, dynamic> data = 
-    {
+    Map<String, dynamic> data = {
       "Time Based": isTimeBased,
       "Title": habitTitle,
       "isBlind": isBlind,
@@ -67,8 +59,7 @@ class _CreateScreenState extends State<CreateScreen>
       "streak": 0
     };
 
-    if(formKey.currentState.validate())
-    {
+    if (formKey.currentState.validate()) {
       formKey.currentState.save();
 
       // Take all of the data from form and save it to the database
@@ -85,58 +76,127 @@ class _CreateScreenState extends State<CreateScreen>
       forSaturday = false;
       forSunday = false;
       wantNotifications = true;
-      
+
       Navigator.pop(context);
     }
   }
 
   @override
-  Widget build(BuildContext context) 
-  {
-    return Scaffold
-    (
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar
-      (
-        title: Text("Add a new habit"),
-      ),
-      body: SingleChildScrollView
-      (
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),    
-        child: Form
-        (
-          key: formKey,
-          child: Column
-          (
-            children: <Widget>
-            [
-              TextFormField
-              (
-                decoration: InputDecoration(hintText: "Name of the habit"), 
-                validator: (input) => !input.isNotEmpty ? 'Please enter the habit title' : null,
-                onChanged: (input) => habitTitle = input,
-              ),
-              CheckboxListTile(title: Text("Time Based"), value: isTimeBased, onChanged: (bool value) { setState(() { isTimeBased = value; }); }, secondary: Icon(Icons.timer)),
-              CheckboxListTile(title: Text("Are you visually disabled?"), value: isBlind, onChanged: (bool value) { setState(() { isBlind = value; }); }, secondary: Icon(Icons.visibility_off)),
-              CheckboxListTile(title: Text("Are you deaf?"), value: isDeaf, onChanged: (bool value) { setState(() { isDeaf = value; }); }, secondary: Icon(Icons.hearing_disabled)),
-              CheckboxListTile(title: Text("Do you want notifications?"), value: wantNotifications, onChanged: (bool value) { setState(() { wantNotifications = value; }); }, secondary: Icon(Icons.notifications)),
-              Text("On what days do you plan on doing this habit?"),
-              CheckboxListTile(title: Text("Monday"), value: forMonday, onChanged: (bool value) { setState(() { forMonday = value; }); }),
-              CheckboxListTile(title: Text("Tuesday"), value: forTuesday, onChanged: (bool value) { setState(() { forTuesday = value; }); }),
-              CheckboxListTile(title: Text("Wednesday"), value: forWednesday, onChanged: (bool value) { setState(() { forWednesday = value; }); }),
-              CheckboxListTile(title: Text("Thursday"), value: forThursday, onChanged: (bool value) { setState(() { forThursday = value; }); }),
-              CheckboxListTile(title: Text("Friday"), value: forFriday, onChanged: (bool value) { setState(() { forFriday = value; }); }),
-              CheckboxListTile(title: Text("Saturday"), value: forSaturday, onChanged: (bool value) { setState(() { forSaturday = value; }); }),
-              CheckboxListTile(title: Text("Sunday"), value: forSunday, onChanged: (bool value) { setState(() { forSunday = value; }); }),
-              RaisedButton(onPressed: createHabit, child: Text("Add"))
-            ],
+  Widget build(BuildContext context) {
+    return Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          title: Text("Add a new habit"),
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(hintText: "Name of the habit"),
+                  validator: (input) =>
+                      !input.isNotEmpty ? 'Please enter the habit title' : null,
+                  onChanged: (input) => habitTitle = input,
+                ),
+                CheckboxListTile(
+                    title: Text("Time Based"),
+                    value: isTimeBased,
+                    onChanged: (bool value) {
+                      setState(() {
+                        isTimeBased = value;
+                      });
+                    },
+                    secondary: Icon(Icons.timer)),
+                CheckboxListTile(
+                    title: Text("Are you visually disabled?"),
+                    value: isBlind,
+                    onChanged: (bool value) {
+                      setState(() {
+                        isBlind = value;
+                      });
+                    },
+                    secondary: Icon(Icons.visibility_off)),
+                CheckboxListTile(
+                    title: Text("Are you deaf?"),
+                    value: isDeaf,
+                    onChanged: (bool value) {
+                      setState(() {
+                        isDeaf = value;
+                      });
+                    },
+                    secondary: Icon(Icons.hearing)),
+                CheckboxListTile(
+                    title: Text("Do you want notifications?"),
+                    value: wantNotifications,
+                    onChanged: (bool value) {
+                      setState(() {
+                        wantNotifications = value;
+                      });
+                    },
+                    secondary: Icon(Icons.notifications)),
+                Text("On what days do you plan on doing this habit?"),
+                CheckboxListTile(
+                    title: Text("Monday"),
+                    value: forMonday,
+                    onChanged: (bool value) {
+                      setState(() {
+                        forMonday = value;
+                      });
+                    }),
+                CheckboxListTile(
+                    title: Text("Tuesday"),
+                    value: forTuesday,
+                    onChanged: (bool value) {
+                      setState(() {
+                        forTuesday = value;
+                      });
+                    }),
+                CheckboxListTile(
+                    title: Text("Wednesday"),
+                    value: forWednesday,
+                    onChanged: (bool value) {
+                      setState(() {
+                        forWednesday = value;
+                      });
+                    }),
+                CheckboxListTile(
+                    title: Text("Thursday"),
+                    value: forThursday,
+                    onChanged: (bool value) {
+                      setState(() {
+                        forThursday = value;
+                      });
+                    }),
+                CheckboxListTile(
+                    title: Text("Friday"),
+                    value: forFriday,
+                    onChanged: (bool value) {
+                      setState(() {
+                        forFriday = value;
+                      });
+                    }),
+                CheckboxListTile(
+                    title: Text("Saturday"),
+                    value: forSaturday,
+                    onChanged: (bool value) {
+                      setState(() {
+                        forSaturday = value;
+                      });
+                    }),
+                CheckboxListTile(
+                    title: Text("Sunday"),
+                    value: forSunday,
+                    onChanged: (bool value) {
+                      setState(() {
+                        forSunday = value;
+                      });
+                    }),
+                RaisedButton(onPressed: createHabit, child: Text("Add"))
+              ],
+            ),
           ),
-        ),      
-      )
-    );
+        ));
   }
-
-  
-    
-   
 }

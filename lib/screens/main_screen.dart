@@ -7,77 +7,62 @@ import 'package:habittracker/screens/notifications_screen.dart';
 import 'package:habittracker/screens/profile_screen.dart';
 import 'package:habittracker/screens/summary_screen.dart';
 
-class MainScreen extends StatefulWidget 
-{
+class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> 
-{
+class _MainScreenState extends State<MainScreen> {
   int tabIndex = 0;
   PageController pageController;
 
-  void initState() 
-  {
+  void initState() {
     super.initState();
     pageController = PageController();
   }
 
   @override
-  Widget build(BuildContext context) 
-  {
-    return Scaffold
-    (
-      appBar: AppBar
-      (
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
           backgroundColor: Colors.blue,
-          title: Text
-          ("Habit Tracker",
-              style: TextStyle
-              (
-                  color: Colors.white, fontFamily: 'Lobster', fontSize: 35.0
-              )
-          )
-      ),
-      body: PageView
-      (
+          title: Text("Habit Tracker",
+              style: TextStyle(
+                  color: Colors.white, fontFamily: 'Lobster', fontSize: 35.0))),
+      body: PageView(
           controller: pageController,
-          children: 
-          [
+          children: [
             HomeScreen(),
             HabitsScreen(),
             SummaryScreen(),
             CalendarScreen(),
             ProfileScreen(),
           ],
-          onPageChanged: (int index) 
-          {
-            setState(() 
-            {
+          onPageChanged: (int index) {
+            setState(() {
               tabIndex = index;
             });
           }),
-      bottomNavigationBar: CupertinoTabBar
-      (
+      bottomNavigationBar: CupertinoTabBar(
           currentIndex: tabIndex,
-          onTap: (int index) 
-          {
-            setState(() 
-            {
+          onTap: (int index) {
+            setState(() {
               tabIndex = index;
             });
 
-            pageController.animateToPage(index, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+            pageController.animateToPage(index,
+                duration: Duration(milliseconds: 200), curve: Curves.easeIn);
           },
           activeColor: Colors.blue,
-          items: 
-          [
+          items: [
             BottomNavigationBarItem(icon: Icon(Icons.home, size: 32.0)),
-            BottomNavigationBarItem(icon: Icon(Icons.check_circle_outline, size: 32.0)),
-            BottomNavigationBarItem(icon: Icon(Icons.bar_chart, size: 32.0)),
-            BottomNavigationBarItem(icon: Icon(Icons.calendar_today, size: 32.0)),
-            BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 32.0)),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.check_circle_outline, size: 32.0)),
+            BottomNavigationBarItem(icon: Icon(Icons.list, size: 32.0)),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_today, size: 32.0)),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle, size: 32.0)),
           ]),
     );
   }

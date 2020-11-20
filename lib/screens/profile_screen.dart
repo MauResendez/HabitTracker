@@ -57,7 +57,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 5.0,
                           ),
                           Text(
-                            snapshot.data['firstName'] + ' ' + snapshot.data['lastName'],
+                            snapshot.data['firstName'] +
+                                ' ' +
+                                snapshot.data['lastName'],
                             style: TextStyle(
                               fontSize: 22.0,
                               color: Colors.white,
