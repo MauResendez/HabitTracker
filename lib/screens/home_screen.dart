@@ -170,7 +170,7 @@ class _MyHabitState extends State<MyHabit> {
                                 builder: (context) => HabitSummary()));
                       })
                 ]),
-              ),
+              ), //Container(child: _calendarCarousel,)
               Text("we want to add a weekly calender, showing complete days"),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
