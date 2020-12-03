@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:habittracker/screens/create_screen.dart';
 import 'package:habittracker/services/auth_service.dart';
 
 class HabitsScreen extends StatefulWidget 

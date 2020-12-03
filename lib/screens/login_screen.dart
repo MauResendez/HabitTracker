@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen>
                       FlatButton
                       (
                           onPressed: submit,
-                          color: Colors.red,
+                          color: Colors.blue,
                           child: Text
                           (
                             "Login",

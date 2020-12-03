@@ -84,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                       FlatButton
                       (
                           onPressed: submit,
-                          color: Colors.red,
+                          color: Colors.blue,
                           child: Text
                           (
                             "Register",

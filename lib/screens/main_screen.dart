@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:habittracker/screens/calendar_screen.dart';
 import 'package:habittracker/screens/habits_screen.dart';
 import 'package:habittracker/screens/home_screen.dart';
+import 'package:habittracker/screens/list_screen.dart';
 import 'package:habittracker/screens/notifications_screen.dart';
 import 'package:habittracker/screens/profile_screen.dart';
 import 'package:habittracker/screens/summary_screen.dart';
@@ -46,7 +47,7 @@ class _MainScreenState extends State<MainScreen>
           children: 
           [
             HomeScreen(),
-            HabitsScreen(),
+            ListScreen(),
             SummaryScreen(),
             CalendarScreen(),
             ProfileScreen(),
