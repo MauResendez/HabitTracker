@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -57,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 5.0,
                           ),
                           Text(
-                            snapshot.data['firstName'] + ' ' + snapshot.data['lastName'],
+                            snapshot.data['username'],
                             style: TextStyle(
                               fontSize: 22.0,
                               color: Colors.white,
@@ -168,6 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         height: 10.0,
                       ),
+                      //add daily quotes to help user keep up the good work motivational
                       Text(
                         'My Well Being \n'
                         'Excellent!',

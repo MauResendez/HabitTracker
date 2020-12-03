@@ -42,8 +42,7 @@ List<Map<String, dynamic>> database = [
   }
 ];
 
-class HomeScreen extends StatefulWidget 
-{
+class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -54,10 +53,8 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 final User user = auth.currentUser;
 final uid = user.uid;
 
-class _HomeScreenState extends State<HomeScreen> 
-{
-  logout() 
-  {
+class _HomeScreenState extends State<HomeScreen> {
+  logout() {
     AuthService.logout();
   }
 
@@ -122,4 +119,3 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 }
-
