@@ -15,7 +15,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
   // habits for our user to see the completion in that day. al i need to add is the list displaying items within the proper dates
   //https://pub.dev/packages/flutter_calendar_carousel
 
-  //current data for main calender
+  //current data for main calender for edits
   DateTime _currentDate = DateTime(2020, 11, 11);
   //current data for weekly calender
   DateTime _currentDate2 = DateTime(2020, 11, 11);
