@@ -1,7 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
+import './Quote.dart';
+
+class QuoteData extends StatefulWidget {
+  @override
+  _QuoteDataState createState() => _QuoteDataState();
+}
+
+// call the API and fetch the response
+Future<Quote> fetchQuote() async {
+  final response = await http.get('https://favqs.com/api/qotd');
+  if (response.statusCode == 200) {
+    return Quote.fromJson(json.decode(response.body));
+  } else {
+    throw Exception('Failed to load Quote');
+  }
+}
+
+class _QuoteDataState extends State<QuoteData>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  Future<Quote> quote;
+  var dbHelper;
+  Future<List<Quote>> wholeQuotes;
+  @override
+  void initState() {
+    super.initState();
+    quote = fetchQuote();
+  }
+}
 
 class ProfileScreen extends StatefulWidget {
   @override

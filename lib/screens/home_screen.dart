@@ -59,63 +59,52 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) 
-  {
-    return Scaffold
-    (
-      body: StreamBuilder
-      (
-        stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('isCurrent', isEqualTo: true).snapshots(),
-        // stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('isCurrent', isEqualTo: false).snapshots(),
-        builder: (context, snapshot)
-        {
-          if(!snapshot.hasData)
-          {
-            return Column
-            (
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[CircularProgressIndicator(backgroundColor: Colors.grey)]
-            );
-          }
-
-          return ListView.builder
-          (
-            itemCount: snapshot.data.documents.length,
-            itemBuilder: (context, index)
-            {
-              DocumentSnapshot doc = snapshot.data.documents[index];
-              return ListTile
-              (
-                leading: Icon(Icons.schedule, size: 40, color: Colors.blue),
-                // leading: CheckboxListTile(value: doc["isComplete"], onChanged: (input) => doc.reference.update({"isComplete": input}), controlAffinity: ListTileControlAffinity.leading),
-                title: Text(doc["Title"]),
-                subtitle: Text
-                (
-                  'Monday, Wednesday, Friday'
-                ),
-                trailing: Wrap
-                (
-                  spacing: 12, // space between two icons
-                  children: <Widget>
-                  [
-                    IconButton(icon: Icon(Icons.edit), onPressed: () 
-                    {
-
-                    }),
-                    IconButton(icon: Icon(Icons.delete), onPressed: ()
-                    {
-                      FirebaseFirestore.instance.collection('habits').doc(doc.id).delete();
-                    }),
-                    FlatButton(onPressed: logout, child: Text("Log Out"))
-                  ],
-                ),
-              );
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('habits')
+              .where('UserID', isEqualTo: uid)
+              .where('isCurrent', isEqualTo: true)
+              .snapshots(),
+          // stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('isCurrent', isEqualTo: false).snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    CircularProgressIndicator(backgroundColor: Colors.grey)
+                  ]);
             }
-          );
-        }
-      ),
-      
+
+            return ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot doc = snapshot.data.documents[index];
+                  return ListTile(
+                    leading: Icon(Icons.schedule, size: 40, color: Colors.blue),
+                    // leading: CheckboxListTile(value: doc["isComplete"], onChanged: (input) => doc.reference.update({"isComplete": input}), controlAffinity: ListTileControlAffinity.leading),
+                    title: Text(doc["Title"]),
+                    subtitle: Text('Monday, Wednesday, Friday'),
+                    trailing: Wrap(
+                      spacing: 12, // space between two icons
+                      children: <Widget>[
+                        IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+                        IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              FirebaseFirestore.instance
+                                  .collection('habits')
+                                  .doc(doc.id)
+                                  .delete();
+                            }),
+                        FlatButton(onPressed: logout, child: Text("Log Out"))
+                      ],
+                    ),
+                  );
+                });
+          }),
     );
   }
 }
