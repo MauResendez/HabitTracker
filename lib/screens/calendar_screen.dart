@@ -15,14 +15,16 @@ class _CalenderScreenState extends State<CalendarScreen> {
   // habits for our user to see the completion in that day. al i need to add is the list displaying items within the proper dates
   //https://pub.dev/packages/flutter_calendar_carousel
 
+  static final DateTime now = new DateTime.now();
   //current data for main calender for edits
-  DateTime _currentDate = DateTime(2020, 11, 11);
+  DateTime _currentDate = DateTime(now.year, now.month, now.day);
   //current data for weekly calender
-  DateTime _currentDate2 = DateTime(2020, 11, 11);
+  DateTime _currentDate2 = DateTime(now.year, now.month, now.day);
 
-  String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 11, 11));
+  String _currentMonth =
+      DateFormat.yMMM().format(DateTime(now.year, now.month, now.day));
   //gives the research date display
-  DateTime _targetDateTime = DateTime(2020, 11, 11);
+  DateTime _targetDateTime = DateTime(now.year, now.month, now.day);
 //List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
