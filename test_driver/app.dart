@@ -1,5 +1,5 @@
 import 'package:flutter_driver/driver_extension.dart';
-import 'package:homebrew_sum2/main.dart' as app;
+import 'package:habittracker/main.dart' as app;
 
 void main() {
   // This line enables the extension.
