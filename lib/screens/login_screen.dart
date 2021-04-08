@@ -54,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ? 'Please enter a valid email'
                                 : null,
                         onChanged: (input) => email = input,
+                        key: Key('user-textfield'),
                       ),
                       TextFormField(
                         decoration: InputDecoration(labelText: 'Password'),
@@ -62,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             : null,
                         onChanged: (input) => password = input,
                         obscureText: true,
+                        key: Key('pwrd-textfield'),
                       ),
                       SizedBox(height: 15.0),
                       FlatButton(
