@@ -68,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 15.0),
                       FlatButton(
                           onPressed: submit,
+                          key: Key('login-button'),
                           color: Colors.blue,
                           child: Text(
                             "Login",
