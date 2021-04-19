@@ -60,6 +60,27 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //pop up dialog when completing the task
+    createCongradulationDialog(BuildContext context) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Contradulations "),
+              content: IconButton(icon: Icon(Icons.share), onPressed: () {}),
+              actions: <Widget>[
+                MaterialButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  elevation: 5.0,
+                  child: Text("OK"),
+                )
+              ],
+            );
+          });
+    }
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -89,11 +110,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       /*leading:
                           Icon(Icons.schedule, size: 40, color: Colors.blue),*/
                       // leading: CheckboxListTile(value: doc["isComplete"], onChanged: (input) => doc.reference.update({"isComplete": input}), controlAffinity: ListTileControlAffinity.leading),
-                      title: Text(doc["Title"]),
-                      subtitle: Text('Monday, Friday'),
+                      title: Column(
+                        children: <Widget>[
+                          Text(doc["Title"]),
+                          Text('Monday, Friday')
+                        ],
+                      ),
+                      subtitle: IconButton(
+                          icon: Icon(Icons.change_history),
+                          iconSize: 40,
+                          color: Colors.green,
+                          onPressed: () {
+                            createCongradulationDialog(context);
+                          }),
                       trailing: Wrap(
                         spacing: 12, // space between two icons
                         children: <Widget>[
+                          IconButton(
+                              icon: Icon(Icons.check_box), onPressed: null),
                           IconButton(icon: Icon(Icons.edit), onPressed: () {}),
                           IconButton(
                               icon: Icon(Icons.delete),
@@ -103,7 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     .doc(doc.id)
                                     .delete();
                               }),
-                          FlatButton(onPressed: logout, child: Text("Log Out"))
                         ],
                       ),
                     );

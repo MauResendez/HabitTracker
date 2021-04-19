@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:habittracker/services/auth_service.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -47,6 +48,10 @@ final User user = auth.currentUser;
 final uid = user.uid;
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  logout() {
+    AuthService.logout();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -225,7 +230,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.black,
                           letterSpacing: 2.0,
                         ),
-                      )
+                      ),
+                      SizedBox(height: 10.0),
+                      FlatButton(onPressed: logout, child: Text("Log Out"))
                     ],
                   ),
                 ),
@@ -237,4 +244,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
