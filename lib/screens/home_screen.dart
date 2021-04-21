@@ -82,66 +82,143 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [Colors.blue[100], Colors.white])),
-        child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('habits')
-                .where('UserID', isEqualTo: uid)
-                .where('isCurrent', isEqualTo: true)
-                .snapshots(),
-            // stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('isCurrent', isEqualTo: false).snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      CircularProgressIndicator(backgroundColor: Colors.grey)
-                    ]);
-              }
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: 200,
+            child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('habits')
+                    .where('UserID', isEqualTo: uid)
+                    .where('isCurrent', isEqualTo: true)
+                    .snapshots(),
+                // stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('isCurrent', isEqualTo: false).snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          CircularProgressIndicator(
+                              backgroundColor: Colors.grey)
+                        ]);
+                  }
 
-              return ListView.builder(
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot doc = snapshot.data.documents[index];
-                    return ListTile(
-                      /*leading:
+                  return ListView.builder(
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot doc = snapshot.data.documents[index];
+                        return ListTile(
+                          /*leading:
                           Icon(Icons.schedule, size: 40, color: Colors.blue),*/
-                      // leading: CheckboxListTile(value: doc["isComplete"], onChanged: (input) => doc.reference.update({"isComplete": input}), controlAffinity: ListTileControlAffinity.leading),
-                      title: Column(
-                        children: <Widget>[
-                          Text(doc["Title"]),
-                          Text('Monday, Friday')
-                        ],
-                      ),
-                      subtitle: IconButton(
-                          icon: Icon(Icons.change_history),
-                          iconSize: 40,
-                          color: Colors.green,
-                          onPressed: () {
-                            createCongradulationDialog(context);
-                          }),
-                      trailing: Wrap(
-                        spacing: 12, // space between two icons
-                        children: <Widget>[
-                          IconButton(
-                              icon: Icon(Icons.check_box), onPressed: null),
-                          IconButton(icon: Icon(Icons.edit), onPressed: () {}),
-                          IconButton(
-                              icon: Icon(Icons.delete),
+                          // leading: CheckboxListTile(value: doc["isComplete"], onChanged: (input) => doc.reference.update({"isComplete": input}), controlAffinity: ListTileControlAffinity.leading),
+                          title: Column(
+                            children: <Widget>[
+                              Text(doc["Title"]),
+                              Text('Monday, Friday')
+                            ],
+                          ),
+                          subtitle: IconButton(
+                              icon: Icon(Icons.change_history),
+                              iconSize: 40,
+                              key: Key('complete-button'),
+                              color: Colors.green,
                               onPressed: () {
-                                FirebaseFirestore.instance
-                                    .collection('habits')
-                                    .doc(doc.id)
-                                    .delete();
+                                createCongradulationDialog(context);
                               }),
-                        ],
-                      ),
-                    );
-                  });
-            }),
+                          trailing: Wrap(
+                            spacing: 12, // space between two icons
+                            children: <Widget>[
+                              IconButton(
+                                  icon: Icon(Icons.check_box), onPressed: null),
+                              IconButton(
+                                  icon: Icon(Icons.edit), onPressed: () {}),
+                              IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('habits')
+                                        .doc(doc.id)
+                                        .delete();
+                                  }),
+                            ],
+                          ),
+                        );
+                      });
+                }),
+          ),
+          Container(
+            //check of its a times or a number of complete
+            height: 200,
+            child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('habits')
+                    .where('UserID', isEqualTo: uid)
+                    .where('isCurrent', isEqualTo: true)
+                    .where('Time Based', isEqualTo: true)
+                    .snapshots(),
+                // stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('isCurrent', isEqualTo: false).snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          CircularProgressIndicator(
+                              backgroundColor: Colors.grey),
+                          Text(
+                            "There is no Primary Habit active",
+                          )
+                        ]);
+                  }
+                  //we will display the timer for the recording when click the complete button
+                  return ListView.builder(
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot doc = snapshot.data.documents[index];
+                        return ListTile(
+                          /*leading:
+                          Icon(Icons.schedule, size: 40, color: Colors.blue),*/
+                          // leading: CheckboxListTile(value: doc["isComplete"], onChanged: (input) => doc.reference.update({"isComplete": input}), controlAffinity: ListTileControlAffinity.leading),
+                          title: Column(
+                            children: <Widget>[
+                              Text(doc["Title"]),
+                              Text('Monday, Friday')
+                            ],
+                          ),
+                          subtitle: IconButton(
+                              icon: Icon(Icons.change_history),
+                              iconSize: 40,
+                              key: Key('complete-button'),
+                              color: Colors.green,
+                              onPressed: () {
+                                createCongradulationDialog(context);
+                              }),
+                          trailing: Wrap(
+                            spacing: 12, // space between two icons
+                            children: <Widget>[
+                              IconButton(
+                                  icon: Icon(Icons.check_box), onPressed: null),
+                              IconButton(
+                                  icon: Icon(Icons.edit), onPressed: () {}),
+                              IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('habits')
+                                        .doc(doc.id)
+                                        .delete();
+                                  }),
+                            ],
+                          ),
+                        );
+                      });
+                }),
+          )
+        ],
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import './Quote.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class QuoteData extends StatefulWidget {
   @override
@@ -37,6 +38,7 @@ class _QuoteDataState extends State<QuoteData>
   }
 }
 
+//ProfileScreen start
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -47,11 +49,24 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 final User user = auth.currentUser;
 final uid = user.uid;
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen>
+    with TickerProviderStateMixin {
   logout() {
     AuthService.logout();
   }
 
+  int hour = 0;
+  int min = 0;
+  int sec = 0;
+  bool started = true;
+  bool stopped = true;
+  int timeForTimer = 0;
+  void start() {
+    timeForTimer = ((hour * 60 * 60) + (min + 60) + sec);
+    print(timeForTimer.toString());
+  }
+
+  void stop() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           colors: [Colors.blue, Colors.green[50]])),
                   child: Container(
                     width: double.infinity,
-                    height: 300.0,
+                    height: 205.0,
                     child: Center(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             backgroundImage: NetworkImage(
                               "https://avatarfiles.alphacoders.com/142/142168.jpg",
                             ),
-                            radius: 50.0,
+                            radius: 30.0,
                           ),
                           SizedBox(
                             height: 5.0,
@@ -98,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             snapshot.data['username'],
                             style: TextStyle(
-                              fontSize: 22.0,
+                              fontSize: 15.0,
                               color: Colors.white,
                             ),
                           ),
@@ -113,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             elevation: 5.0,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 22.0),
+                                  horizontal: 8.0, vertical: 15.0),
                               child: Row(
                                 children: <Widget>[
                                   Expanded(
@@ -123,7 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           "Complete",
                                           style: TextStyle(
                                             color: Colors.blue,
-                                            fontSize: 22.0,
+                                            fontSize: 20.0,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -147,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           "Days",
                                           style: TextStyle(
                                             color: Colors.blue,
-                                            fontSize: 22.0,
+                                            fontSize: 20.0,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -205,10 +220,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(
-                        height: 10.0,
+                        height: 1.0,
                       ),
                       //add daily quotes to help user keep up the good work motivational
-                      Text(
+                      /*Text(
                         'My Well Being \n'
                         'Excellent!',
                         style: TextStyle(
@@ -230,8 +245,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.black,
                           letterSpacing: 2.0,
                         ),
+                      ),*/
+                      //this is the pop up timer to be interted into the create a habit that is timed into a timer
+                      Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 5.0,
+                                    ),
+                                    child: Text("HH"),
+                                  ),
+                                  NumberPicker.integer(
+                                    initialValue: hour,
+                                    minValue: 0,
+                                    maxValue: 23,
+                                    listViewWidth: 60.0,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        hour = val;
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
+                              //this is the minutes for the timer
+                              Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 5.0,
+                                    ),
+                                    child: Text("MIN"),
+                                  ),
+                                  NumberPicker.integer(
+                                    initialValue: min,
+                                    minValue: 0,
+                                    maxValue: 23,
+                                    listViewWidth: 60.0,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        min = val;
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
+                              //this is the seconds for the timer
+                              Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 5.0,
+                                    ),
+                                    child: Text("SEC"),
+                                  ),
+                                  NumberPicker.integer(
+                                    initialValue: sec,
+                                    minValue: 0,
+                                    maxValue: 23,
+                                    listViewWidth: 60.0,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        sec = val;
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          Text("hello there"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              RaisedButton(
+                                onPressed: started ? start : null,
+                                color: Colors.green,
+                                child: Text("Start"),
+                              ),
+                              RaisedButton(
+                                onPressed: stopped ? null : stop,
+                                color: Colors.red,
+                                child: Text("Stop"),
+                              )
+                            ],
+                          )
+                        ],
                       ),
-                      SizedBox(height: 10.0),
                       FlatButton(onPressed: logout, child: Text("Log Out"))
                     ],
                   ),

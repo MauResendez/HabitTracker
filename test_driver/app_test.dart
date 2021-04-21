@@ -31,6 +31,8 @@ void main() {
         await driver.tap(loginFinder);
         //move into profile page
         //click on the complete button
+        final completeFInder = find.byValueKey('complete-button');
+        await driver.tap(completeFInder);
       });
       test("move around the application", () async {
         //move into main habit page

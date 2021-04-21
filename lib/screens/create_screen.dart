@@ -15,6 +15,7 @@ final User user = auth.currentUser;
 final uid = user.uid;
 
 class _CreateScreenState extends State<CreateScreen> {
+  bool isCurrent = false; //abrahan had added to see if works when save habit
   bool isTimeBased = false;
   bool isBlind = false;
   bool isDeaf = false;
@@ -65,6 +66,7 @@ class _CreateScreenState extends State<CreateScreen> {
       // Take all of the data from form and save it to the database
       firestore.collection('/habits').add(data);
 
+      isCurrent = false;
       isTimeBased = false;
       isBlind = false;
       isDeaf = false;
@@ -83,6 +85,22 @@ class _CreateScreenState extends State<CreateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    createTimeChoosingTypeDialog(BuildContext context) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Would you like to take a Timer or a Stopwatch"),
+              content: Row(
+                children: <Widget>[
+                  IconButton(icon: Icon(Icons.timer), onPressed: null),
+                  IconButton(icon: Icon(Icons.watch), onPressed: null)
+                ],
+              ),
+            );
+          });
+    }
+
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
@@ -101,10 +119,23 @@ class _CreateScreenState extends State<CreateScreen> {
                   onChanged: (input) => habitTitle = input,
                 ),
                 CheckboxListTile(
+                    title: Text("Primary Habit?"),
+                    value: isCurrent,
+                    onChanged: (bool value) {
+                      setState(() {
+                        isCurrent = value;
+                      });
+                    }, //added this checkbox to have a primary habit change or added.
+                    secondary: Icon(Icons.priority_high)),
+                CheckboxListTile(
                     title: Text("Time Based"),
                     value: isTimeBased,
                     onChanged: (bool value) {
                       setState(() {
+                        //time type
+                        //make a bool TimeType, if 0 its a timer, if 1 its a stopwatch
+                        //
+                        createTimeChoosingTypeDialog(context);
                         isTimeBased = value;
                       });
                     },
