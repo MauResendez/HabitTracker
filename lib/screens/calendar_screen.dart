@@ -76,7 +76,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
     ///  check if add works for different events
     /// create a for loop for our habit notifications, and complete status
     _markedDateMap.add(
-        new DateTime(2020, 11, 1),
+        new DateTime(2021, 4, 22),
         new Event(
           date: new DateTime(2020, 11, 13),
           title: 'Event 5',
@@ -219,7 +219,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
 
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Hello there"),
+          title: Text("Your Calender"),
         ),
         body: SingleChildScrollView(
           child: Column(

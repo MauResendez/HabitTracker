@@ -52,7 +52,7 @@ class _CreateScreenState extends State<CreateScreen> {
       "Days": days,
       "UserID": uid,
       "isComplete": false,
-      "isCurrent": false,
+      "isCurrent": isCurrent,
       "dailyCompletions": 0,
       "weeklyCompletions": 0,
       "monthlyCompletions": 0,

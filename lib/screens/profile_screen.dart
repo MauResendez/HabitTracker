@@ -61,12 +61,44 @@ class _ProfileScreenState extends State<ProfileScreen>
   bool started = true;
   bool stopped = true;
   int timeForTimer = 0;
+  String timedisplay = "";
+  bool checktimer = true;
+
   void start() {
+    setState(() {
+      started = false;
+      stopped = false;
+    });
     timeForTimer = ((hour * 60 * 60) + (min * 60) + sec);
     print(timeForTimer.toString());
+    Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        if (timeForTimer < 1 || checktimer == false) {
+          t.cancel();
+          checktimer = true;
+          timedisplay = "";
+        } else if (timeForTimer < 60) {
+          timedisplay = timeForTimer.toString();
+          timeForTimer = timeForTimer - 1;
+        } else if (timeForTimer < 3600) {
+          int m = timeForTimer ~/ 60;
+          int s = timeForTimer - (60 * m);
+          timedisplay = m.toString() + ":" + s.toString();
+          timeForTimer = timeForTimer - 1;
+        }
+        timedisplay = timeForTimer.toString();
+      });
+    });
   }
 
-  void stop() {}
+  void stop() {
+    setState(() {
+      started = true;
+      stopped = true;
+      checktimer = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             backgroundImage: NetworkImage(
                               "https://avatarfiles.alphacoders.com/142/142168.jpg",
                             ),
-                            radius: 30.0,
+                            radius: 35.0,
                           ),
                           SizedBox(
                             height: 5.0,
@@ -319,7 +351,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                             ],
                           ),
-                          Text("hello there"),
+                          Text(timedisplay),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
