@@ -62,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   bool stopped = true;
   int timeForTimer = 0;
   void start() {
-    timeForTimer = ((hour * 60 * 60) + (min + 60) + sec);
+    timeForTimer = ((hour * 60 * 60) + (min * 60) + sec);
     print(timeForTimer.toString());
   }
 
