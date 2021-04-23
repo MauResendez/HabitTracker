@@ -98,7 +98,7 @@ class _BluetoothpageState extends State<Bluetoothpage> {
       BluetoothCharacteristic characteristic) {
     List<ButtonTheme> buttons = new List<ButtonTheme>();
 
-    if (characteristic.properties.read) {
+    if (characteristic.properties.indicate) {
       buttons.add(
         ButtonTheme(
           minWidth: 10,
@@ -112,6 +112,7 @@ class _BluetoothpageState extends State<Bluetoothpage> {
                 var sub = characteristic.value.listen((value) {
                   setState(() {
                     readValues[characteristic.uuid] = value;
+                    characteristic.setNotifyValue(true);
                   });
                 });
                 await characteristic.read();

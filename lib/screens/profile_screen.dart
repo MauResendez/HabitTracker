@@ -117,160 +117,161 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: Text('Loading data. Please wait...'),
-            );
-          }
-          return Column(
-            // children: <Widget>
-            // [
-            //   Text(snapshot.data['email']),
-            //   Text(snapshot.data['username']),
-            // ],
+        body: Column(
+      // stream:
+      //     FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
+      // builder: (context, snapshot) {
+      //   if (!snapshot.hasData) {
+      //     return Center(
+      //       child: Text('Loading data. Please wait...'),
+      //     );
+      //   }
+      //   return Column(
+      //children: <Widget>
+      // [
+      //   Text(snapshot.data['email']),
+      //   Text(snapshot.data['username']),
+      // ],
 
-            children: <Widget>[
-              Container(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Colors.blue, Colors.green[50]])),
-                  child: Container(
-                    width: double.infinity,
-                    height: 205.0,
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              "https://avatarfiles.alphacoders.com/142/142168.jpg",
-                            ),
-                            radius: 35.0,
-                          ),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Text(
-                            snapshot.data['username'],
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Card(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 5.0),
-                            clipBehavior: Clip.antiAlias,
-                            color: Colors.white,
-                            elevation: 5.0,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 15.0),
-                              child: Row(
+      children: <Widget>[
+        Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.blue, Colors.green[50]])),
+            child: Container(
+              width: double.infinity,
+              height: 100.0,
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        "https://avatarfiles.alphacoders.com/142/142168.jpg",
+                      ),
+                      radius: 35.0,
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      // snapshot.data['username'],
+                      "",
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Card(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                      clipBehavior: Clip.antiAlias,
+                      color: Colors.white,
+                      elevation: 5.0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 15.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
                                 children: <Widget>[
-                                  Expanded(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          "Complete",
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          "42",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.blue[10],
-                                          ),
-                                        )
-                                      ],
+                                  Text(
+                                    "Complete",
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          "Days",
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          "142",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.blue[10],
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                  SizedBox(
+                                    height: 5.0,
                                   ),
-                                  Expanded(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          "Activities",
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: 22.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          "52",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.blue[10],
-                                          ),
-                                        )
-                                      ],
+                                  Text(
+                                    "42",
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      color: Colors.blue[10],
                                     ),
-                                  ),
+                                  )
                                 ],
                               ),
                             ),
-                          )
-                        ],
+                            Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "Days",
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Text(
+                                    "142",
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      color: Colors.blue[10],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "Activities",
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 22.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Text(
+                                    "52",
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      color: Colors.blue[10],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 30.0, horizontal: 16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 1.0,
-                      ),
-                      //add daily quotes to help user keep up the good work motivational
-                      /*Text(
+                    )
+                  ],
+                ),
+              ),
+            )),
+        Container(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 1.0,
+                ),
+                //add daily quotes to help user keep up the good work motivational
+                /*Text(
                         'My Well Being \n'
                         'Excellent!',
                         style: TextStyle(
@@ -293,117 +294,114 @@ class _ProfileScreenState extends State<ProfileScreen>
                           letterSpacing: 2.0,
                         ),
                       ),*/
-                      //this is the pop up timer to be interted into the create a habit that is timed into a timer
-                      Column(
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      bottom: 5.0,
-                                    ),
-                                    child: Text("HH"),
-                                  ),
-                                  NumberPicker.integer(
-                                    initialValue: hour,
-                                    minValue: 0,
-                                    maxValue: 23,
-                                    listViewWidth: 60.0,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        hour = val;
-                                      });
-                                    },
-                                  )
-                                ],
+                //this is the pop up timer to be interted into the create a habit that is timed into a timer
+                Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: 5.0,
                               ),
-                              //this is the minutes for the timer
-                              Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      bottom: 5.0,
-                                    ),
-                                    child: Text("MIN"),
-                                  ),
-                                  NumberPicker.integer(
-                                    initialValue: min,
-                                    minValue: 0,
-                                    maxValue: 23,
-                                    listViewWidth: 60.0,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        min = val;
-                                      });
-                                    },
-                                  )
-                                ],
+                              child: Text("HH"),
+                            ),
+                            NumberPicker.integer(
+                              initialValue: hour,
+                              minValue: 0,
+                              maxValue: 23,
+                              listViewWidth: 60.0,
+                              onChanged: (val) {
+                                setState(() {
+                                  hour = val;
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                        //this is the minutes for the timer
+                        Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: 5.0,
                               ),
-                              //this is the seconds for the timer
-                              Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      bottom: 5.0,
-                                    ),
-                                    child: Text("SEC"),
-                                  ),
-                                  NumberPicker.integer(
-                                    initialValue: sec,
-                                    minValue: 0,
-                                    maxValue: 23,
-                                    listViewWidth: 60.0,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        sec = val;
-                                      });
-                                    },
-                                  )
-                                ],
+                              child: Text("MIN"),
+                            ),
+                            NumberPicker.integer(
+                              initialValue: min,
+                              minValue: 0,
+                              maxValue: 23,
+                              listViewWidth: 60.0,
+                              onChanged: (val) {
+                                setState(() {
+                                  min = val;
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                        //this is the seconds for the timer
+                        Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: 5.0,
                               ),
-                            ],
-                          ),
-                          Text(timedisplay),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              RaisedButton(
-                                onPressed: started ? start : null,
-                                color: Colors.green,
-                                child: Text("Start"),
-                              ),
-                              RaisedButton(
-                                onPressed: stopped ? null : stop,
-                                color: Colors.red,
-                                child: Text("Stop"),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          FlatButton(onPressed: logout, child: Text("Log Out")),
-                          RaisedButton(onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Bluetoothpage()));
-                            //Navigator.push(context, MaterialPageRoute(builder: (context) => Bluetoothpage());
-                          })
-                        ],
-                      )
-                    ],
-                  ),
+                              child: Text("SEC"),
+                            ),
+                            NumberPicker.integer(
+                              initialValue: sec,
+                              minValue: 0,
+                              maxValue: 23,
+                              listViewWidth: 60.0,
+                              onChanged: (val) {
+                                setState(() {
+                                  sec = val;
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    Text(timedisplay),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        RaisedButton(
+                          onPressed: started ? start : null,
+                          color: Colors.green,
+                          child: Text("Start"),
+                        ),
+                        RaisedButton(
+                          onPressed: stopped ? null : stop,
+                          color: Colors.red,
+                          child: Text("Stop"),
+                        )
+                      ],
+                    )
+                  ],
                 ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
+                Row(
+                  children: [
+                    FlatButton(onPressed: logout, child: Text("Log Out")),
+                    RaisedButton(onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Bluetoothpage()));
+                      //Navigator.push(context, MaterialPageRoute(builder: (context) => Bluetoothpage());
+                    })
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    ));
   }
 }
