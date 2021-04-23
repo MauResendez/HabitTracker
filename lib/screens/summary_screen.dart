@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'home_screen.dart';
 
+int activehabits = 0;
+int completionhabithistory = 0;
+
 List<List<CircularStackEntry>> _pieData = [
   <CircularStackEntry>[
     CircularStackEntry(<CircularSegmentEntry>[
@@ -35,8 +38,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
               ),
               Column(
                 children: <Widget>[
-                  Text("Completion 42"),
-                  Text("Active Habits 2")
+                  Text("Completion: " + completionhabithistory.toString()),
+                  Text("Active Habits: " + activehabits.toString())
                 ],
               )
             ],

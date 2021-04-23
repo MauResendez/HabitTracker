@@ -19,7 +19,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
-  
+
 dependencies:
   google_fonts: ^1.1.0
   string_validator: ^0.1.4
