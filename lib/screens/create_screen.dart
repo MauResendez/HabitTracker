@@ -102,7 +102,6 @@ class _CreateScreenState extends State<CreateScreen> {
     }
 
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: Text("Add a new habit"),
         ),

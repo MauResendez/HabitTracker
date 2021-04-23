@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:habittracker/screens/bluetooth.dart';
 import 'package:habittracker/screens/home_screen.dart';
 import 'package:habittracker/services/auth_service.dart';
 import 'dart:async';
@@ -383,7 +384,18 @@ class _ProfileScreenState extends State<ProfileScreen>
                           )
                         ],
                       ),
-                      FlatButton(onPressed: logout, child: Text("Log Out"))
+                      Row(
+                        children: [
+                          FlatButton(onPressed: logout, child: Text("Log Out")),
+                          RaisedButton(onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Bluetoothpage()));
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => Bluetoothpage());
+                          })
+                        ],
+                      )
                     ],
                   ),
                 ),

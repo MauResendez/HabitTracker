@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'home_screen.dart';
 
 int activehabits = 0;
 int completionhabithistory = 0;
-
+/*
 List<List<CircularStackEntry>> _pieData = [
   <CircularStackEntry>[
     CircularStackEntry(<CircularSegmentEntry>[
@@ -13,7 +12,7 @@ List<List<CircularStackEntry>> _pieData = [
       CircularSegmentEntry(25.0, Colors.yellow, rankKey: 'D3'),
     ])
   ],
-];
+];*/
 
 class SummaryScreen extends StatefulWidget {
   @override
@@ -32,10 +31,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              AnimatedCircularChart(
+              /* AnimatedCircularChart(
                 size: _size,
                 initialChartData: _pieData[0],
-              ),
+              ),*/
               Column(
                 children: <Widget>[
                   Text("Completion: " + completionhabithistory.toString()),

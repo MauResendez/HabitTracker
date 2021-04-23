@@ -88,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void startstopwatch() {
     setState(() {
+      //when start time save date and save to database
       stoppressed = false;
       startpressed = false;
     });
@@ -97,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void stopstopwatch() {
     setState(() {
-      //save date started the stopwatch
       stoppressed = true;
       resetpressed = false;
     });
