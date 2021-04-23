@@ -107,7 +107,7 @@ class _BluetoothpageState extends State<Bluetoothpage> {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: RaisedButton(
               color: Colors.blue,
-              child: Text('READ', style: TextStyle(color: Colors.white)),
+              child: Text('READ :', style: TextStyle(color: Colors.white)),
               onPressed: () async {
                 var sub = characteristic.value.listen((value) {
                   setState(() {
