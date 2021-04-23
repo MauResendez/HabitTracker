@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habittracker/services/auth_service.dart';
+import 'package:string_validator/string_validator.dart';
 
 import 'calendar_screen.dart';
 import 'create_screen.dart';
@@ -56,6 +60,116 @@ final uid = user.uid;
 class _HomeScreenState extends State<HomeScreen> {
   logout() {
     AuthService.logout();
+  }
+
+  bool startpressed = true;
+  bool stoppressed = true;
+  bool resetpressed = true;
+  String stoptimetodisplay = "00:00:00";
+  var swatch = Stopwatch();
+  final dur = const Duration(seconds: 1);
+
+  void starttimer() {
+    Timer(dur, keeprunning);
+  }
+
+  void keeprunning() {
+    if (swatch.isRunning) {
+      starttimer();
+    }
+    setState(() {
+      stoptimetodisplay = swatch.elapsed.inHours.toString().padLeft(2, "0") +
+          ":" +
+          (swatch.elapsed.inMinutes % 60).toString().padLeft(2, "0") +
+          ":" +
+          (swatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
+    });
+  }
+
+  void startstopwatch() {
+    setState(() {
+      stoppressed = false;
+      startpressed = false;
+    });
+    swatch.start();
+    starttimer();
+  }
+
+  void stopstopwatch() {
+    setState(() {
+      //save date started the stopwatch
+      stoppressed = true;
+      resetpressed = false;
+    });
+    swatch.stop();
+  }
+
+  void resetstopwatch() {
+    setState(() {
+      startpressed = true;
+      resetpressed = true;
+    });
+    //save the total before deleting info and send to database;
+
+    stoptimetodisplay = "00:00:00";
+    swatch.reset();
+  }
+
+  Widget stopwatch() {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            child: Text(
+              stoptimetodisplay,
+              style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w600),
+            ),
+          ),
+          SizedBox(),
+          Container(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: stoppressed ? null : stopstopwatch,
+                      color: Colors.red,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 40.0,
+                        vertical: 15.0,
+                      ),
+                      child: Text("STOP"),
+                    ),
+                    RaisedButton(
+                      onPressed: resetpressed ? null : resetstopwatch,
+                      color: Colors.teal,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 40.0,
+                        vertical: 15.0,
+                      ),
+                      child: Text("RESET"),
+                    )
+                  ],
+                ),
+                SizedBox(),
+                RaisedButton(
+                  onPressed: startpressed ? startstopwatch : null,
+                  color: Colors.green,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 60.0,
+                    vertical: 20.0,
+                  ),
+                  child: Text("START"),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -151,72 +265,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 }),
           ),
           Container(
-            //check of its a times or a number of complete
-            height: 200,
-            child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('habits')
-                    .where('UserID', isEqualTo: uid)
-                    .where('isCurrent', isEqualTo: true)
-                    .where('Time Based', isEqualTo: true)
-                    .snapshots(),
-                // stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('isCurrent', isEqualTo: false).snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          CircularProgressIndicator(
-                              backgroundColor: Colors.grey),
-                          Text(
-                            "There is no Primary Habit active",
-                          )
-                        ]);
-                  }
-                  //we will display the timer for the recording when click the complete button
-                  return ListView.builder(
-                      itemCount: snapshot.data.documents.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot doc = snapshot.data.documents[index];
-                        return ListTile(
-                          /*leading:
-                          Icon(Icons.schedule, size: 40, color: Colors.blue),*/
-                          // leading: CheckboxListTile(value: doc["isComplete"], onChanged: (input) => doc.reference.update({"isComplete": input}), controlAffinity: ListTileControlAffinity.leading),
-                          title: Column(
-                            children: <Widget>[
-                              Text(doc["Title"]),
-                              Text('Monday, Friday')
-                            ],
-                          ),
-                          subtitle: IconButton(
-                              icon: Icon(Icons.change_history),
-                              iconSize: 40,
-                              key: Key('complete-button'),
-                              color: Colors.green,
-                              onPressed: () {
-                                createCongradulationDialog(context);
-                              }),
-                          trailing: Wrap(
-                            spacing: 12, // space between two icons
-                            children: <Widget>[
-                              IconButton(
-                                  icon: Icon(Icons.check_box), onPressed: null),
-                              IconButton(
-                                  icon: Icon(Icons.edit), onPressed: () {}),
-                              IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection('habits')
-                                        .doc(doc.id)
-                                        .delete();
-                                  }),
-                            ],
-                          ),
-                        );
-                      });
-                }),
+            child: Column(
+              children: <Widget>[
+                stopwatch(),
+                Text("show the list of completions for this habit"),
+                Text("hello there")
+              ],
+            ),
           )
         ],
       ),

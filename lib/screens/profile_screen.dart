@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:habittracker/screens/home_screen.dart';
 import 'package:habittracker/services/auth_service.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -71,22 +72,35 @@ class _ProfileScreenState extends State<ProfileScreen>
     });
     timeForTimer = ((hour * 60 * 60) + (min * 60) + sec);
     print(timeForTimer.toString());
+
     Timer.periodic(Duration(seconds: 1), (Timer t) {
       setState(() {
         if (timeForTimer < 1 || checktimer == false) {
           t.cancel();
           checktimer = true;
           timedisplay = "";
-        } else if (timeForTimer < 60) {
+          started = true;
+          stopped = true;
+        } //value is less then 1 min.
+        else if (timeForTimer < 60) {
           timedisplay = timeForTimer.toString();
           timeForTimer = timeForTimer - 1;
-        } else if (timeForTimer < 3600) {
+        }
+        //value is less then 1 hour.
+        else if (timeForTimer < 3600) {
           int m = timeForTimer ~/ 60;
           int s = timeForTimer - (60 * m);
           timedisplay = m.toString() + ":" + s.toString();
           timeForTimer = timeForTimer - 1;
+        } else {
+          //value is greater then one hour.
+          int h = timeForTimer ~/ 3600;
+          int t = timeForTimer - (3600 * h);
+          int m = t ~/ 60;
+          int s = t - (60 * m);
+          timedisplay = h.toString() + ":" + m.toString() + ":" + s.toString();
+          timeForTimer = timeForTimer - 1;
         }
-        timedisplay = timeForTimer.toString();
       });
     });
   }
