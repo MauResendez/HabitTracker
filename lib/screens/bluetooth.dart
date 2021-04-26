@@ -3,6 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
+BluetoothDevice connectedDevice;
+BluetoothCharacteristic characteristic;
+final Map<Guid, List<int>> readValues = new Map<Guid, List<int>>();
+int messageread = 0;
+
 class Bluetoothpage extends StatefulWidget {
   @override
   _BluetoothpageState createState() => _BluetoothpageState();
@@ -11,10 +16,12 @@ class Bluetoothpage extends StatefulWidget {
 class _BluetoothpageState extends State<Bluetoothpage> {
   final FlutterBlue flutterBlue = FlutterBlue.instance;
   final List<BluetoothDevice> devicesList = new List<BluetoothDevice>();
-  final Map<Guid, List<int>> readValues = new Map<Guid, List<int>>();
+
   final textController = TextEditingController();
-  BluetoothDevice connectedDevice;
+
   List<BluetoothService> bluetoothServices;
+
+  get buttons => null;
 
   _showDeviceTolist(final BluetoothDevice device) {
     if (!devicesList.contains(device)) {
@@ -98,7 +105,7 @@ class _BluetoothpageState extends State<Bluetoothpage> {
       BluetoothCharacteristic characteristic) {
     List<ButtonTheme> buttons = new List<ButtonTheme>();
 
-    if (characteristic.properties.indicate) {
+    if (characteristic.properties.read) {
       buttons.add(
         ButtonTheme(
           minWidth: 10,
@@ -107,12 +114,11 @@ class _BluetoothpageState extends State<Bluetoothpage> {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: RaisedButton(
               color: Colors.blue,
-              child: Text('READ :', style: TextStyle(color: Colors.white)),
+              child: Text('READ', style: TextStyle(color: Colors.white)),
               onPressed: () async {
                 var sub = characteristic.value.listen((value) {
                   setState(() {
                     readValues[characteristic.uuid] = value;
-                    characteristic.setNotifyValue(true);
                   });
                 });
                 await characteristic.read();

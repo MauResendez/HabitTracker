@@ -7,10 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:habittracker/services/auth_service.dart';
 import 'package:string_validator/string_validator.dart';
 
+import 'package:flutter_blue/flutter_blue.dart';
+
 import 'calendar_screen.dart';
 import 'create_screen.dart';
 import 'edit_screen.dart';
 import 'habit_summary.dart';
+import 'bluetooth.dart';
 
 int total_habits = 0;
 String habitname;
@@ -78,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
       starttimer();
     }
     setState(() {
+      //this is to save the value;
       stoptimetodisplay = swatch.elapsed.inHours.toString().padLeft(2, "0") +
           ":" +
           (swatch.elapsed.inMinutes % 60).toString().padLeft(2, "0") +
