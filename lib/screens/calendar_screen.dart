@@ -217,10 +217,8 @@ class _CalenderScreenState extends State<CalendarScreen> {
       },
     );
 
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("Hello there"),
-        ),
+    return new Scaffold
+    (
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

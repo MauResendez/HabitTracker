@@ -9,80 +9,89 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> 
+{
   final formKey = GlobalKey<FormState>();
   String email, password;
 
   submit() {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState.validate()) 
+    {
       formKey.currentState.save();
       AuthService.login(email, password);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height:
-              MediaQuery.of(context).size.height, // Height of the entire screen
-          child:
-              Column // Uses a column widget that line up the children widgets vertically
-                  (
-            mainAxisAlignment: MainAxisAlignment
-                .center, // Makes the column centered vertically
-            crossAxisAlignment: CrossAxisAlignment
-                .center, // Makes the column centered horizontally
-            children: [
-              Text("Habit Tracker",
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 60,
-                      fontFamily: 'Lobster')), //
-              Form(
+  Widget build(BuildContext context) 
+  {
+    return Scaffold
+    (
+      body: SingleChildScrollView
+      (
+        child: Container
+        (
+          height: MediaQuery.of(context).size.height, // Height of the entire screen
+          child: Column // Uses a column widget that line up the children widgets vertically
+          (
+            mainAxisAlignment: MainAxisAlignment.center, // Makes the column centered vertically
+            crossAxisAlignment: CrossAxisAlignment.center, // Makes the column centered horizontally
+            children: 
+            [
+              Text
+              (
+                "Habit Tracker",
+                style: TextStyle
+                (
+                  color: Colors.blue,
+                  fontSize: 50,
+                )
+              ), //
+              Form
+              (
                 key: formKey,
-                child: Padding(
+                child: Padding
+                (
                   padding: const EdgeInsets.all(50.0),
-                  child: Column(
+                  child: Column
+                  (
                     mainAxisSize: MainAxisSize.min,
-                    children: [
+                    children: 
+                    [
                       TextFormField(
                         decoration: InputDecoration(labelText: 'Email'),
-                        validator: (input) =>
-                            !input.contains('@') && !input.isNotEmpty
-                                ? 'Please enter a valid email'
-                                : null,
+                        validator: (input) => !input.contains('@') && !input.isNotEmpty ? 'Please enter a valid email' : null,
                         onChanged: (input) => email = input,
                         key: Key('user-textfield'),
                       ),
-                      TextFormField(
+                      TextFormField
+                      (
                         decoration: InputDecoration(labelText: 'Password'),
-                        validator: (input) => !input.isNotEmpty
-                            ? 'Please enter a valid password'
-                            : null,
+                        validator: (input) => !input.isNotEmpty ? 'Please enter a valid password' : null,
                         onChanged: (input) => password = input,
                         obscureText: true,
                         key: Key('pwrd-textfield'),
                       ),
                       SizedBox(height: 15.0),
-                      FlatButton(
-                          onPressed: submit,
-                          key: Key('login-button'),
-                          color: Colors.blue,
-                          child: Text(
-                            "Login",
-                            style: TextStyle(color: Colors.white, fontSize: 17),
-                          )),
-                      Padding(
+                      FlatButton
+                      (
+                        onPressed: submit,
+                        key: Key('login-button'),
+                        color: Colors.blue,
+                        child: Text
+                        (
+                          "Login",
+                          style: TextStyle(color: Colors.white, fontSize: 17),
+                        )),
+                      Padding
+                      (
                         padding: const EdgeInsets.only(top: 10),
-                        child: GestureDetector(
-                            onTap: () =>
-                                Navigator.pushNamed(context, RegisterScreen.id),
-                            child: Text(
-                              "Don't have an account, register here",
-                              style: TextStyle(color: Colors.red, fontSize: 15),
-                            )),
+                        child: GestureDetector(onTap: () => Navigator.pushNamed(context, RegisterScreen.id),
+                        child: Text
+                        (
+                          "Don't have an account, register here",
+                          style: TextStyle(color: Colors.red, fontSize: 15),
+                        )),
                       )
                     ],
                   ),
