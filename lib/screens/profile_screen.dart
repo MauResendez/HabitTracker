@@ -387,12 +387,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
                 Row(
                   children: [
-                    FlatButton(onPressed: logout, child: Text("Log Out")),
-                    RaisedButton(onPressed: () {
+                    TextButton(onPressed: logout, child: Text("Log Out")),
+                    ElevatedButton(onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Bluetoothpage()));
+                              builder: (context) => FlutterBlueApp()));
                       //Navigator.push(context, MaterialPageRoute(builder: (context) => Bluetoothpage());
                     })
                   ],

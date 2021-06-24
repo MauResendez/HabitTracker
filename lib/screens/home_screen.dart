@@ -1,56 +1,17 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:habittracker/services/auth_service.dart';
-import 'package:string_validator/string_validator.dart';
-
 import 'package:flutter_blue/flutter_blue.dart';
-
-import 'calendar_screen.dart';
-import 'create_screen.dart';
-import 'edit_screen.dart';
-import 'habit_summary.dart';
-import 'bluetooth.dart';
-
-int total_habits = 0;
-String habitname;
-Key habitID;
-int total_complete;
-
-List<Map<String, dynamic>> database = [
-  {
-    "id": 0,
-    "taskT": "Understand Code",
-    "taskS": 15,
-    "habitmade": "10:15 11/15/2020"
-  },
-  {
-    "id": 1,
-    "taskT": "Figure out duplication",
-    "taskS": 20,
-    "habitmade": "10:15 11/12/2020"
-  },
-  {"id": 2, "taskT": "Refactor", "taskS": 0, "habitmade": "10:15 2/15/2020"},
-  {
-    "id": 3,
-    "taskT": "Add comments",
-    "taskS": 35,
-    "habitmade": "10:15 11/13/2020"
-  },
-  {"id": 4, "taskT": "commit code", "taskS": 0, "habitmade": "10:15 2/15/2020"},
-  {
-    "id": 5,
-    "taskT": "push to github",
-    "taskS": 50,
-    "habitmade": "10:15 11/15/2020"
-  }
-];
+import 'package:habittracker/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
+
+  const HomeScreen({Key key, this.device}) : super(key: key);
+  final BluetoothDevice device;
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -61,130 +22,164 @@ final User user = auth.currentUser;
 final uid = user.uid;
 
 class _HomeScreenState extends State<HomeScreen> {
-  logout() {
-    AuthService.logout();
+  final String SERVICE_UUID = "00001523-1212-EFDE-1523-785FEABCD123";
+  final String CHARACTERISTIC_UUID = "00001524-1212-EFDE-1523-785FEABCD123";
+  bool isReady;
+  Stream<List<int>> stream;
+
+  @override
+  void initState() {
+    super.initState();
+    isReady = false;
+    connectToDevice();
   }
 
-  bool startpressed = true;
-  bool stoppressed = true;
-  bool resetpressed = true;
-  String stoptimetodisplay = "00:00:00";
-  var swatch = Stopwatch();
-  final dur = const Duration(seconds: 1);
-
-  void starttimer() {
-    Timer(dur, keeprunning);
+  _Pop() async {
+    Navigator.of(context).pop(true);
   }
 
-  void keeprunning() {
-    if (swatch.isRunning) {
-      starttimer();
+  connectToDevice() async {
+    if (widget.device == null) {
+      _Pop();
+      return;
     }
-    setState(() {
-      //this is to save the value;
-      stoptimetodisplay = swatch.elapsed.inHours.toString().padLeft(2, "0") +
-          ":" +
-          (swatch.elapsed.inMinutes % 60).toString().padLeft(2, "0") +
-          ":" +
-          (swatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
+
+    new Timer(const Duration(seconds: 15), () {
+      if (!isReady) {
+        disconnectFromDevice();
+        _Pop();
+      }
     });
+
+    await widget.device.connect();
+    discoverServices();
   }
 
-  void startstopwatch() {
-    setState(() {
-      //when start time save date and save to database
-      stoppressed = false;
-      startpressed = false;
-    });
-    swatch.start();
-    starttimer();
+  disconnectFromDevice() {
+    if (widget.device == null) {
+      _Pop();
+      return;
+    }
+
+    widget.device.disconnect();
   }
 
-  void stopstopwatch() {
-    setState(() {
-      stoppressed = true;
-      resetpressed = false;
+  discoverServices() async {
+    if (widget.device == null) {
+      _Pop();
+      return;
+    }
+
+    List<BluetoothService> services = await widget.device.discoverServices();
+    services.forEach((service) {
+      if (service.uuid.toString() == SERVICE_UUID) {
+        service.characteristics.forEach((characteristic) {
+          if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
+            characteristic.setNotifyValue(!characteristic.isNotifying);
+
+            //see if this prints value sent from button only using that uuid as of now.
+            //an increament
+            //this characteristic is to triger a function. in this case the primary habit on stand by.
+            //
+            stream = characteristic.value;
+
+            setState(() {
+              isReady = true;
+            });
+          }
+        });
+      }
     });
-    swatch.stop();
+
+    if (!isReady) {
+      _Pop();
+    }
   }
+  // logout()
+  // {
+  //   AuthService.logout();
+  // }
 
-  void resetstopwatch() {
-    setState(() {
-      startpressed = true;
-      resetpressed = true;
-    });
-    //save the total before deleting info and send to database;
+  // Timer timer;
+  // QuerySnapshot currentHabit;
 
-    stoptimetodisplay = "00:00:00";
-    swatch.reset();
-  }
+  // void startHabit() async
+  // {
+  //   print("In the start habit function");
+  //   currentHabit = await FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('startTime', isEqualTo: TimeOfDay.now().format(context)).get();
+  // }
 
-  Widget stopwatch() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            child: Text(
-              stoptimetodisplay,
-              style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w600),
-            ),
-          ),
-          SizedBox(),
-          Container(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    RaisedButton(
-                      onPressed: stoppressed ? null : stopstopwatch,
-                      color: Colors.red,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 40.0,
-                        vertical: 15.0,
-                      ),
-                      child: Text("STOP"),
-                    ),
-                    RaisedButton(
-                      onPressed: resetpressed ? null : resetstopwatch,
-                      color: Colors.teal,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 40.0,
-                        vertical: 15.0,
-                      ),
-                      child: Text("RESET"),
-                    )
-                  ],
-                ),
-                SizedBox(),
-                RaisedButton(
-                  onPressed: startpressed ? startstopwatch : null,
-                  color: Colors.green,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 60.0,
-                    vertical: 20.0,
-                  ),
-                  child: Text("START"),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+  // void endHabit() async
+  // {
+  //   print("In the end habit function");
+  //   currentHabit = await FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('endTime', isEqualTo: TimeOfDay.now().format(context)).get();
+  // }
+
+  // @override
+  // void initState()
+  // {
+  //   timer = Timer.periodic
+  //   (
+  //     Duration(seconds: 10), (Timer t) =>
+  //     setState
+  //     (()
+  //     {
+  //       if(currentHabit == null || currentHabit.docs.isEmpty)
+  //       {
+  //         print("Null");
+  //         startHabit();
+  //       }
+  //       else
+  //       {
+  //         print("HI");
+  //         print(currentHabit.docs[0]["Title"]);
+  //       }
+  //     })
+  //   );
+
+  //   super.initState();
+
+  //   // Every 15 seconds, we check all of the current habits
+  //   // and see if one of them has the same start time as the current time
+  //   //
+  //   // If one of them is, make that the current habit
+  //   // loop
+  //   // // if(current_habit["startTime"] == TimeOfDay.now().format(context))
+  //   // // {
+  //   // //     current_habit["hasStarted"] = true;
+  //   // // }
+  // }
+
+  // @override
+  // void dispose()
+  // {
+  //   timer?.cancel();
+  //   super.dispose();
+  // }
+
+  Widget getHabitTypeWidget(String type) {
+    switch (type) {
+      case "Timer":
+        return Text("Timer");
+        break;
+      case "Stopwatch":
+        return Text("Stopwatch");
+        break;
+      default:
+        return Text("");
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     //pop up dialog when completing the task
-    createCongradulationDialog(BuildContext context) {
+    CreateCongratulationDialog(BuildContext context) {
       return showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text("Contradulations "),
+              title: Text("Congratulations!"),
               content: IconButton(icon: Icon(Icons.share), onPressed: () {}),
               actions: <Widget>[
                 MaterialButton(
@@ -200,84 +195,78 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            height: 200,
-            child: StreamBuilder(
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: 20,
+            ),
+            StreamBuilder(
+                // stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('isCurrent', isEqualTo: true).snapshots(),
                 stream: FirebaseFirestore.instance
                     .collection('habits')
                     .where('UserID', isEqualTo: uid)
-                    .where('isCurrent', isEqualTo: true)
+                    .where('inProgress', isEqualTo: true)
                     .snapshots(),
-                // stream: FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('isCurrent', isEqualTo: false).snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          CircularProgressIndicator(
-                              backgroundColor: Colors.grey)
-                        ]);
+                    return Center(
+                      child: Text('Loading data. Please wait...'),
+                    );
                   }
 
-                  return ListView.builder(
-                      itemCount: snapshot.data.documents.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot doc = snapshot.data.documents[index];
-                        return ListTile(
-                          /*leading:
-                          Icon(Icons.schedule, size: 40, color: Colors.blue),*/
-                          // leading: CheckboxListTile(value: doc["isComplete"], onChanged: (input) => doc.reference.update({"isComplete": input}), controlAffinity: ListTileControlAffinity.leading),
-                          title: Column(
-                            children: <Widget>[
-                              Text(doc["Title"]),
-                              Text('Monday, Friday')
-                            ],
-                          ),
-                          subtitle: IconButton(
-                              icon: Icon(Icons.change_history),
-                              iconSize: 40,
-                              key: Key('complete-button'),
-                              color: Colors.green,
-                              onPressed: () {
-                                createCongradulationDialog(context);
-                              }),
-                          trailing: Wrap(
-                            spacing: 12, // space between two icons
-                            children: <Widget>[
-                              IconButton(
-                                  icon: Icon(Icons.check_box), onPressed: null),
-                              IconButton(
-                                  icon: Icon(Icons.edit), onPressed: () {}),
-                              IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection('habits')
-                                        .doc(doc.id)
-                                        .delete();
-                                  }),
-                            ],
-                          ),
-                        );
-                      });
-                }),
-          ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                stopwatch(),
-                Text("show the list of completions for this habit"),
-                Text("hello there")
-              ],
-            ),
-          )
-        ],
+                  if (snapshot.data.documents.length == 0) {
+                    return Center(
+                      child: Text("No current habit in progress",
+                          style: TextStyle(fontSize: 20)),
+                    );
+                  }
+
+                  return Column(
+                    children: <Widget>[
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                                "Current Habit: ${snapshot.data.documents[0]["Title"]}",
+                                style: TextStyle(fontSize: 30))
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                                "Start Time: ${snapshot.data.documents[0]["startTime"]}",
+                                style: TextStyle(fontSize: 20))
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                                "End Time: ${snapshot.data.documents[0]["endTime"]}",
+                                style: TextStyle(fontSize: 20))
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                                "Completions: ${snapshot.data.documents[0]["Completions"]}",
+                                style: TextStyle(fontSize: 20))
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                                "Streak: ${snapshot.data.documents[0]["Streak"]}",
+                                style: TextStyle(fontSize: 20))
+                          ]),
+                      getHabitTypeWidget(snapshot.data.documents[0]["Type"])
+                    ],
+                  );
+                })
+          ],
+        ),
       ),
     );
   }
