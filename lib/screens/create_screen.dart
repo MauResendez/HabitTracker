@@ -175,9 +175,10 @@ class _CreateScreenState extends State<CreateScreen> {
                       !input.isNotEmpty ? 'Please enter the habit title' : null,
                   onChanged: (input) => habitTitle = input,
                 ),
-                RaisedButton(
+                ElevatedButton(
                     onPressed: onSaveStartTime, child: Text("Start Time")),
-                RaisedButton(onPressed: onSaveEndTime, child: Text("End Time")),
+                ElevatedButton(
+                    onPressed: onSaveEndTime, child: Text("End Time")),
                 CheckboxListTile(
                     title: Text("Primary Habit?"),
                     value: isCurrent,
@@ -360,7 +361,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   ),
                 ),
                 errorMessage(error),
-                RaisedButton(onPressed: createHabit, child: Text("Add"))
+                ElevatedButton(onPressed: createHabit, child: Text("Add"))
               ],
             ),
           ),

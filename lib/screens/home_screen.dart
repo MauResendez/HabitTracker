@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:habittracker/services/auth_service.dart';
 
+import 'package:numberpicker/numberpicker.dart';
+
 class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
 
@@ -22,79 +24,254 @@ final User user = auth.currentUser;
 final uid = user.uid;
 
 class _HomeScreenState extends State<HomeScreen> {
-  final String SERVICE_UUID = "00001523-1212-EFDE-1523-785FEABCD123";
-  final String CHARACTERISTIC_UUID = "00001524-1212-EFDE-1523-785FEABCD123";
-  bool isReady;
-  Stream<List<int>> stream;
+  String bluetooth = "0";
+  //start of the timer variables
+  int hour = 0;
+  int min = 0;
+  int sec = 0;
+  bool started = true;
+  bool stopped = true;
+  int timeForTimer = 0;
+  String timedisplay = "";
+  bool checktimer = true;
 
-  @override
-  void initState() {
-    super.initState();
-    isReady = false;
-    connectToDevice();
-  }
-
-  _Pop() async {
-    Navigator.of(context).pop(true);
-  }
-
-  connectToDevice() async {
-    if (widget.device == null) {
-      _Pop();
-      return;
-    }
-
-    new Timer(const Duration(seconds: 15), () {
-      if (!isReady) {
-        disconnectFromDevice();
-        _Pop();
-      }
+  void start() {
+    setState(() {
+      started = false;
+      stopped = false;
     });
+    timeForTimer = ((hour * 60 * 60) + (min * 60) + sec);
+    print(timeForTimer.toString());
 
-    await widget.device.connect();
-    discoverServices();
-  }
-
-  disconnectFromDevice() {
-    if (widget.device == null) {
-      _Pop();
-      return;
-    }
-
-    widget.device.disconnect();
-  }
-
-  discoverServices() async {
-    if (widget.device == null) {
-      _Pop();
-      return;
-    }
-
-    List<BluetoothService> services = await widget.device.discoverServices();
-    services.forEach((service) {
-      if (service.uuid.toString() == SERVICE_UUID) {
-        service.characteristics.forEach((characteristic) {
-          if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
-            characteristic.setNotifyValue(!characteristic.isNotifying);
-
-            //see if this prints value sent from button only using that uuid as of now.
-            //an increament
-            //this characteristic is to triger a function. in this case the primary habit on stand by.
-            //
-            stream = characteristic.value;
-
-            setState(() {
-              isReady = true;
-            });
-          }
-        });
-      }
+    Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        if (timeForTimer < 1 || checktimer == false) {
+          t.cancel();
+          checktimer = true;
+          timedisplay = "";
+          started = true;
+          stopped = true;
+        } //value is less then 1 min.
+        else if (timeForTimer < 60) {
+          timedisplay = timeForTimer.toString();
+          timeForTimer = timeForTimer - 1;
+        }
+        //value is less then 1 hour.
+        else if (timeForTimer < 3600) {
+          int m = timeForTimer ~/ 60;
+          int s = timeForTimer - (60 * m);
+          timedisplay = m.toString() + ":" + s.toString();
+          timeForTimer = timeForTimer - 1;
+        } else {
+          //value is greater then one hour.
+          int h = timeForTimer ~/ 3600;
+          int t = timeForTimer - (3600 * h);
+          int m = t ~/ 60;
+          int s = t - (60 * m);
+          timedisplay = h.toString() + ":" + m.toString() + ":" + s.toString();
+          timeForTimer = timeForTimer - 1;
+        }
+      });
     });
-
-    if (!isReady) {
-      _Pop();
-    }
   }
+
+  void stop() {
+    setState(() {
+      started = true;
+      stopped = true;
+      checktimer = false;
+    });
+  }
+
+  Widget timer() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 5.0,
+                  ),
+                  child: Text("HH"),
+                ),
+                NumberPicker.integer(
+                  initialValue: hour,
+                  minValue: 0,
+                  maxValue: 23,
+                  listViewWidth: 60.0,
+                  onChanged: (val) {
+                    setState(() {
+                      hour = val;
+                    });
+                  },
+                )
+              ],
+            ),
+            //this is the minutes for the timer
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 5.0,
+                  ),
+                  child: Text("MIN"),
+                ),
+                NumberPicker.integer(
+                  initialValue: min,
+                  minValue: 0,
+                  maxValue: 23,
+                  listViewWidth: 60.0,
+                  onChanged: (val) {
+                    setState(() {
+                      min = val;
+                    });
+                  },
+                )
+              ],
+            ),
+            //this is the seconds for the timer
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 5.0,
+                  ),
+                  child: Text("SEC"),
+                ),
+                NumberPicker.integer(
+                  initialValue: sec,
+                  minValue: 0,
+                  maxValue: 23,
+                  listViewWidth: 60.0,
+                  onChanged: (val) {
+                    setState(() {
+                      sec = val;
+                    });
+                  },
+                )
+              ],
+            ),
+          ],
+        ),
+        Text(timedisplay),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: started ? start : null,
+              child: Text("Start"),
+            ),
+            ElevatedButton(
+              onPressed: stopped ? null : stop,
+              child: Text("Stop"),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  //start of the stopwatch variables
+  bool startpressed = true;
+  bool stoppressed = true;
+  bool resetpressed = true;
+  String stoptimetodisplay = "00:00:00";
+  var swatch = Stopwatch();
+  final dur = const Duration(seconds: 1);
+
+  void starttimer() {
+    Timer(dur, keeprunning);
+  }
+
+  void keeprunning() {
+    if (swatch.isRunning) {
+      starttimer();
+    }
+    setState(() {
+      stoptimetodisplay = swatch.elapsed.inHours.toString().padLeft(2, "0") +
+          ":" +
+          (swatch.elapsed.inMinutes % 60).toString().padLeft(2, "0") +
+          ":" +
+          (swatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
+    });
+  }
+
+  void startstopwatch() {
+    setState(() {
+      stoppressed = false;
+      startpressed = false;
+    });
+    swatch.start();
+    starttimer();
+  }
+
+  void stopstopwatch() {
+    setState(() {
+      //save date started the stopwatch
+      stoppressed = true;
+      resetpressed = false;
+    });
+    swatch.stop();
+  }
+
+  void resetstopwatch() {
+    setState(() {
+      startpressed = true;
+      resetpressed = true;
+    });
+    //save the total before deleting info and send to database;
+
+    stoptimetodisplay = "00:00:00";
+    swatch.reset();
+  }
+
+  Widget stopwatch() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            child: Text(
+              stoptimetodisplay,
+              style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w600),
+            ),
+          ),
+          SizedBox(),
+          Container(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: stoppressed ? null : stopstopwatch,
+                      child: Text("STOP"),
+                    ),
+                    ElevatedButton(
+                      onPressed: resetpressed ? null : resetstopwatch,
+                      child: Text("RESET"),
+                    )
+                  ],
+                ),
+                SizedBox(),
+                ElevatedButton(
+                  onPressed: startpressed ? startstopwatch : null,
+                  child: Text("START"),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  //this is the characteristics of the bluetooth nrf50
+
   // logout()
   // {
   //   AuthService.logout();
@@ -160,13 +337,19 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget getHabitTypeWidget(String type) {
     switch (type) {
       case "Timer":
-        return Text("Timer");
+        //display the widget timer in the home page withits habit type.
+        return Column(
+          children: [timer()],
+        );
         break;
       case "Stopwatch":
-        return Text("Stopwatch");
+        //return case for the stopwatch using the widget stopwatch created in the home page
+        return Column(
+          children: [stopwatch()],
+        );
         break;
       default:
-        return Text("");
+        return TextButton(onPressed: null, child: const Text("hello there"));
         break;
     }
   }
@@ -261,7 +444,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "Streak: ${snapshot.data.documents[0]["Streak"]}",
                                 style: TextStyle(fontSize: 20))
                           ]),
-                      getHabitTypeWidget(snapshot.data.documents[0]["Type"])
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          getHabitTypeWidget(snapshot.data.documents[0]["Type"])
+                        ],
+                      ),
+                      Row(
+                        children: [Text(bluetooth)],
+                      )
                     ],
                   );
                 })

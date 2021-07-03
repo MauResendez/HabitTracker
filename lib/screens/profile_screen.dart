@@ -57,63 +57,6 @@ class _ProfileScreenState extends State<ProfileScreen>
     AuthService.logout();
   }
 
-  int hour = 0;
-  int min = 0;
-  int sec = 0;
-  bool started = true;
-  bool stopped = true;
-  int timeForTimer = 0;
-  String timedisplay = "";
-  bool checktimer = true;
-
-  void start() {
-    setState(() {
-      started = false;
-      stopped = false;
-    });
-    timeForTimer = ((hour * 60 * 60) + (min * 60) + sec);
-    print(timeForTimer.toString());
-
-    Timer.periodic(Duration(seconds: 1), (Timer t) {
-      setState(() {
-        if (timeForTimer < 1 || checktimer == false) {
-          t.cancel();
-          checktimer = true;
-          timedisplay = "";
-          started = true;
-          stopped = true;
-        } //value is less then 1 min.
-        else if (timeForTimer < 60) {
-          timedisplay = timeForTimer.toString();
-          timeForTimer = timeForTimer - 1;
-        }
-        //value is less then 1 hour.
-        else if (timeForTimer < 3600) {
-          int m = timeForTimer ~/ 60;
-          int s = timeForTimer - (60 * m);
-          timedisplay = m.toString() + ":" + s.toString();
-          timeForTimer = timeForTimer - 1;
-        } else {
-          //value is greater then one hour.
-          int h = timeForTimer ~/ 3600;
-          int t = timeForTimer - (3600 * h);
-          int m = t ~/ 60;
-          int s = t - (60 * m);
-          timedisplay = h.toString() + ":" + m.toString() + ":" + s.toString();
-          timeForTimer = timeForTimer - 1;
-        }
-      });
-    });
-  }
-
-  void stop() {
-    setState(() {
-      started = true;
-      stopped = true;
-      checktimer = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     colors: [Colors.blue, Colors.green[50]])),
             child: Container(
               width: double.infinity,
-              height: 100.0,
+              height: 300.0,
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     ),
                     SizedBox(
-                      height: 5.0,
+                      height: 40.0,
                     ),
                     Card(
                       margin:
@@ -294,97 +237,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                           letterSpacing: 2.0,
                         ),
                       ),*/
+
                 //this is the pop up timer to be interted into the create a habit that is timed into a timer
-                Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                bottom: 5.0,
-                              ),
-                              child: Text("HH"),
-                            ),
-                            NumberPicker.integer(
-                              initialValue: hour,
-                              minValue: 0,
-                              maxValue: 23,
-                              listViewWidth: 60.0,
-                              onChanged: (val) {
-                                setState(() {
-                                  hour = val;
-                                });
-                              },
-                            )
-                          ],
-                        ),
-                        //this is the minutes for the timer
-                        Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                bottom: 5.0,
-                              ),
-                              child: Text("MIN"),
-                            ),
-                            NumberPicker.integer(
-                              initialValue: min,
-                              minValue: 0,
-                              maxValue: 23,
-                              listViewWidth: 60.0,
-                              onChanged: (val) {
-                                setState(() {
-                                  min = val;
-                                });
-                              },
-                            )
-                          ],
-                        ),
-                        //this is the seconds for the timer
-                        Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                bottom: 5.0,
-                              ),
-                              child: Text("SEC"),
-                            ),
-                            NumberPicker.integer(
-                              initialValue: sec,
-                              minValue: 0,
-                              maxValue: 23,
-                              listViewWidth: 60.0,
-                              onChanged: (val) {
-                                setState(() {
-                                  sec = val;
-                                });
-                              },
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Text(timedisplay),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        RaisedButton(
-                          onPressed: started ? start : null,
-                          color: Colors.green,
-                          child: Text("Start"),
-                        ),
-                        RaisedButton(
-                          onPressed: stopped ? null : stop,
-                          color: Colors.red,
-                          child: Text("Stop"),
-                        )
-                      ],
-                    )
-                  ],
-                ),
+
                 Row(
                   children: [
                     TextButton(onPressed: logout, child: Text("Log Out")),

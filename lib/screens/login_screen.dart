@@ -66,13 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: Key('pwrd-textfield'),
                       ),
                       SizedBox(height: 15.0),
-                      FlatButton(
+                      TextButton(
                           onPressed: submit,
                           key: Key('login-button'),
-                          color: Colors.blue,
                           child: Text(
                             "Login",
-                            style: TextStyle(color: Colors.white, fontSize: 17),
+                            style: TextStyle(color: Colors.blue, fontSize: 17),
                           )),
                       Padding(
                         padding: const EdgeInsets.only(top: 10),

@@ -43,7 +43,7 @@ class _CalenderScreenState extends State<CalendarScreen> {
       new DateTime(2020, 11, 10): [
         //of events are going to be the habits times to take, just upload the info into the variables required.
         new Event(
-          date: new DateTime(2020, 11, 10),
+          date: new DateTime(2021, 7, 10),
           title: 'Event 1',
           icon: _eventIcon,
           dot: Container(
