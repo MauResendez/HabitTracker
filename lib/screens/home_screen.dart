@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:habittracker/services/auth_service.dart';
-
 import 'package:numberpicker/numberpicker.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,13 +17,16 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-final FirebaseAuth auth = FirebaseAuth.instance;
+// final FirebaseAuth auth = FirebaseAuth.instance;
 
-final User user = auth.currentUser;
-final uid = user.uid;
+// final User user = auth.currentUser;
+// final uid = user.uid;
 
 class _HomeScreenState extends State<HomeScreen> {
-  String bluetooth = "0";
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user;
+  var uid;
+
   //start of the timer variables
   int hour = 0;
   int min = 0;
@@ -191,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (swatch.isRunning) {
       starttimer();
     }
+
     setState(() {
       stoptimetodisplay = swatch.elapsed.inHours.toString().padLeft(2, "0") +
           ":" +
@@ -220,6 +223,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void resetstopwatch() {
     setState(() {
+      //save into the database
+
       startpressed = true;
       resetpressed = true;
     });
@@ -270,69 +275,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //this is the characteristics of the bluetooth nrf50
+  void getUser() {
+    setState(() {
+      user = auth.currentUser;
+      uid = user.uid;
+    });
+  }
 
-  // logout()
-  // {
-  //   AuthService.logout();
-  // }
-
-  // Timer timer;
-  // QuerySnapshot currentHabit;
-
-  // void startHabit() async
-  // {
-  //   print("In the start habit function");
-  //   currentHabit = await FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('startTime', isEqualTo: TimeOfDay.now().format(context)).get();
-  // }
-
-  // void endHabit() async
-  // {
-  //   print("In the end habit function");
-  //   currentHabit = await FirebaseFirestore.instance.collection('habits').where('UserID', isEqualTo: uid).where('endTime', isEqualTo: TimeOfDay.now().format(context)).get();
-  // }
-
-  // @override
-  // void initState()
-  // {
-  //   timer = Timer.periodic
-  //   (
-  //     Duration(seconds: 10), (Timer t) =>
-  //     setState
-  //     (()
-  //     {
-  //       if(currentHabit == null || currentHabit.docs.isEmpty)
-  //       {
-  //         print("Null");
-  //         startHabit();
-  //       }
-  //       else
-  //       {
-  //         print("HI");
-  //         print(currentHabit.docs[0]["Title"]);
-  //       }
-  //     })
-  //   );
-
-  //   super.initState();
-
-  //   // Every 15 seconds, we check all of the current habits
-  //   // and see if one of them has the same start time as the current time
-  //   //
-  //   // If one of them is, make that the current habit
-  //   // loop
-  //   // // if(current_habit["startTime"] == TimeOfDay.now().format(context))
-  //   // // {
-  //   // //     current_habit["hasStarted"] = true;
-  //   // // }
-  // }
-
-  // @override
-  // void dispose()
-  // {
-  //   timer?.cancel();
-  //   super.dispose();
-  // }
+  void initState() {
+    getUser();
+    super.initState();
+  }
 
   Widget getHabitTypeWidget(String type) {
     switch (type) {
@@ -349,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
         break;
       default:
-        return TextButton(onPressed: null, child: const Text("hello there"));
+        return TextButton(onPressed: null, child: const Text("Hello There"));
         break;
     }
   }
@@ -402,9 +355,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   if (snapshot.data.documents.length == 0) {
                     return Center(
-                      child: Text("No current habit in progress",
-                          style: TextStyle(fontSize: 20)),
-                    );
+                        child: Text("No current habit in progress",
+                            style: TextStyle(fontSize: 20)));
                   }
 
                   return Column(
@@ -444,15 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "Streak: ${snapshot.data.documents[0]["Streak"]}",
                                 style: TextStyle(fontSize: 20))
                           ]),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          getHabitTypeWidget(snapshot.data.documents[0]["Type"])
-                        ],
-                      ),
-                      Row(
-                        children: [Text(bluetooth)],
-                      )
+                      getHabitTypeWidget(snapshot.data.documents[0]["Type"])
                     ],
                   );
                 })

@@ -27,9 +27,56 @@ class _SummaryScreenState extends State<SummaryScreen> {
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: null,
+                  child: Text("Sun."),
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  onPressed: null,
+                  child: Text("Mon."),
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  onPressed: null,
+                  child: Text("Tues."),
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  onPressed: null,
+                  child: Text("Wed."),
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  onPressed: null,
+                  child: Text("Thurs."),
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  onPressed: null,
+                  child: Text("Fri."),
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  onPressed: null,
+                  child: Text("Sat."),
+                ),
+              )
+            ],
+          ),
+          Expanded(
+              child: Row(
             children: <Widget>[
               /* AnimatedCircularChart(
                 size: _size,
@@ -42,8 +89,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ],
               )
             ],
-          ),
-          Text("Habit List for Today")
+          )),
+          Expanded(child: Text("Habit List for Today"))
         ],
       ),
     );

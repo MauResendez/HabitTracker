@@ -75,8 +75,9 @@ class _CalenderScreenState extends State<CalendarScreen> {
     /// i would have a list of records with the dates in this month to display on calender
     ///  check if add works for different events
     /// create a for loop for our habit notifications, and complete status
+    ///
     _markedDateMap.add(
-        new DateTime(2021, 4, 22),
+        new DateTime(2021, 7, 2),
         new Event(
           date: new DateTime(2020, 11, 13),
           title: 'Event 5',

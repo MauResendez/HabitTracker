@@ -8,13 +8,29 @@ class CreateScreen extends StatefulWidget {
   _CreateScreenState createState() => _CreateScreenState();
 }
 
-void initState() {}
-
-final FirebaseAuth auth = FirebaseAuth.instance;
-final User user = auth.currentUser;
-final uid = user.uid;
+// final FirebaseAuth auth = FirebaseAuth.instance;
+// final User user = auth.currentUser;
+// final uid = user.uid;
 
 class _CreateScreenState extends State<CreateScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user;
+  var uid;
+
+  void getUser() {
+    setState(() {
+      user = auth.currentUser;
+      uid = user.uid;
+    });
+  }
+
+  void initState() {
+    getUser();
+    startTime = TimeOfDay.now();
+    endTime = TimeOfDay.now();
+    super.initState();
+  }
+
   bool isCurrent = false; //abrahan had added to see if works when save habit
   bool error = false;
   bool monday = false;
@@ -27,19 +43,12 @@ class _CreateScreenState extends State<CreateScreen> {
   String habitType = "Default";
   String habitTitle = "";
   String ledColor = "Red";
-  // DateTime startTime;
   TimeOfDay timeGetter;
   TimeOfDay startTime;
   TimeOfDay endTime;
 
   final firestore = FirebaseFirestore.instance;
   final formKey = GlobalKey<FormState>();
-
-  void initState() {
-    startTime = TimeOfDay.now();
-    endTime = TimeOfDay.now();
-    super.initState();
-  }
 
   createHabit() {
     Map<String, dynamic> days = {
@@ -100,15 +109,7 @@ class _CreateScreenState extends State<CreateScreen> {
     }
   }
 
-  // TimeOfDay _startTime = TimeOfDay(hour:int.parse(s.split(":")[0]),minute: int.parse(s.split(":")[1]));
-  //
-  // import 'package:intl/intl.dart';
-// parse date
-// DateTime date= DateFormat.jm().parse("6:45 PM");
-// DateTime date2= DateFormat("hh:mma").parse("6:45PM"); // think this will work better for you
-// // format date
-// print(DateFormat("HH:mm").format(date));
-// print(DateFormat("HH:mm").format(date2));
+  checkTimeAndDays() {}
 
   onSaveStartTime() async {
     if (startTime == null) {
@@ -138,10 +139,6 @@ class _CreateScreenState extends State<CreateScreen> {
     {
       endTime = timeGetter;
     }
-
-    print(endTime);
-
-    // DateFormat('hh:mm aa').format(alarm.alarmDateTime);
   }
 
   Widget errorMessage(bool err) {
@@ -159,7 +156,7 @@ class _CreateScreenState extends State<CreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Text("Add a new habit"),
         ),
@@ -175,37 +172,20 @@ class _CreateScreenState extends State<CreateScreen> {
                       !input.isNotEmpty ? 'Please enter the habit title' : null,
                   onChanged: (input) => habitTitle = input,
                 ),
-                ElevatedButton(
-                    onPressed: onSaveStartTime, child: Text("Start Time")),
-                ElevatedButton(
-                    onPressed: onSaveEndTime, child: Text("End Time")),
-                CheckboxListTile(
-                    title: Text("Primary Habit?"),
-                    value: isCurrent,
-                    onChanged: (bool value) {
-                      setState(() {
-                        isCurrent = value;
-                      });
-                    }, //added this checkbox to have a primary habit change or added.
-                    secondary: Icon(Icons.priority_high)),
-                // CheckboxListTile
-                // (
-                //     title: Text("Time Based"),
-                //     value: isTimeBased,
-                //     onChanged: (bool value)
-                //     {
-                //       setState(()
-                //       {
-                //         //time type
-                //         //make a bool TimeType, if 0 its a timer, if 1 its a stopwatch
-                //         //
-                //         createTimeChoosingTypeDialog(context);
-                //         isTimeBased = value;
-                //       });
-                //     },
-                //     secondary: Icon(Icons.timer)
-                // ),
-                // SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: <Widget>[
+                      RaisedButton(
+                          onPressed: onSaveStartTime,
+                          child: Text("Start Time")),
+                      RaisedButton(
+                          onPressed: onSaveEndTime, child: Text("End Time")),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  ),
+                ),
                 Text("What type of habit do you want?",
                     style:
                         TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
@@ -361,7 +341,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   ),
                 ),
                 errorMessage(error),
-                ElevatedButton(onPressed: createHabit, child: Text("Add"))
+                RaisedButton(onPressed: createHabit, child: Text("Add")),
               ],
             ),
           ),

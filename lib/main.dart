@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:habittracker/screens/login_screen.dart';
 import 'package:habittracker/screens/register_screen.dart';
-import 'package:habittracker/screens/main_screen.dart';
+import 'package:habittracker/screens/tab_screen.dart';
 import 'package:habittracker/screens/home_screen.dart';
 
 Future<void> main() async {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
-            return MainScreen();
+            return TabScreen();
           } else {
             return LoginScreen();
           }
