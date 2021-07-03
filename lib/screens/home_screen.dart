@@ -12,13 +12,32 @@ class HomeScreen extends StatefulWidget
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-final FirebaseAuth auth = FirebaseAuth.instance;
+// final FirebaseAuth auth = FirebaseAuth.instance;
 
-final User user = auth.currentUser;
-final uid = user.uid;
+// final User user = auth.currentUser;
+// final uid = user.uid;
 
 class _HomeScreenState extends State<HomeScreen> 
 {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user; 
+  var uid;
+
+  void getUser()
+  {
+    setState(() 
+    {
+      user = auth.currentUser;
+      uid = user.uid;
+    });
+  }
+
+  void initState()
+  {
+    getUser();
+    super.initState();
+  }
+
   Widget getHabitTypeWidget(String type) 
   {
     switch(type)

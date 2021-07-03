@@ -16,8 +16,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String first_name, last_name, email, password;
   TapGestureRecognizer recognizer;
 
-  submit() {
-    if (formKey.currentState.validate()) {
+  submit() 
+  {
+    if (formKey.currentState.validate()) 
+    {
       formKey.currentState.save();
       AuthService.registerUser(context, first_name, last_name, email, password);
     }

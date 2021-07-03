@@ -18,13 +18,51 @@ class TabScreen extends StatefulWidget
   _TabScreenState createState() => _TabScreenState();
 }
 
-final FirebaseAuth auth = FirebaseAuth.instance;
+// final FirebaseAuth auth = FirebaseAuth.instance;
 
-final User user = auth.currentUser;
-final uid = user.uid;
+// final User user = auth.currentUser;
+// final uid = user.uid;
 
 class _TabScreenState extends State<TabScreen> 
 {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user; 
+  var uid;
+
+  void getUser()
+  {
+    setState(() 
+    {
+      user = auth.currentUser;
+      uid = user.uid;
+    });
+  }
+
+  @override
+  void initState()
+  {
+    getUser();
+    timer = Timer.periodic
+    (
+      Duration(seconds: 10), (Timer t) =>  
+      setState
+      (()
+      {
+        if(currentHabit == null || currentHabit.docs.isEmpty)
+        {
+          startHabit();
+        }
+        else
+        {
+          endHabit();
+        }
+      })
+    );
+ 
+    pageController = PageController();
+    super.initState();
+  }
+
   int tabIndex = 0;
   PageController pageController;
 
@@ -57,30 +95,6 @@ class _TabScreenState extends State<TabScreen>
       currentHabit = null;
       FirebaseFirestore.instance.collection("habits").doc(currentHabitID).update({"inProgress": false});
     }
-  }
-
-  @override
-  void initState()
-  {
-    timer = Timer.periodic
-    (
-      Duration(seconds: 10), (Timer t) =>  
-      setState
-      (()
-      {
-        if(currentHabit == null || currentHabit.docs.isEmpty)
-        {
-          startHabit();
-        }
-        else
-        {
-          endHabit();
-        }
-      })
-    );
- 
-    pageController = PageController();
-    super.initState();
   }
 
   @override
@@ -136,6 +150,7 @@ class _TabScreenState extends State<TabScreen>
       ),
       bottomNavigationBar: CupertinoTabBar
       (
+          key: Key('BNB'),
           currentIndex: tabIndex,
           onTap: (int index) 
           {
@@ -149,11 +164,11 @@ class _TabScreenState extends State<TabScreen>
           activeColor: Colors.blue,
           items: 
           [
-            BottomNavigationBarItem(icon: Icon(Icons.home, size: 32.0)),
-            BottomNavigationBarItem(icon: Icon(Icons.check_circle_outline, size: 32.0)),
-            BottomNavigationBarItem(icon: Icon(Icons.bar_chart, size: 32.0)),
-            BottomNavigationBarItem(icon: Icon(Icons.calendar_today, size: 32.0)),
-            BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 32.0)),
+            BottomNavigationBarItem(icon: Icon(Icons.home, size: 32.0), title: Text('Home')),
+            BottomNavigationBarItem(icon: Icon(Icons.check_circle_outline, size: 32.0), title: Text('List')),
+            BottomNavigationBarItem(icon: Icon(Icons.bar_chart, size: 32.0), title: Text('Summary')),
+            BottomNavigationBarItem(icon: Icon(Icons.calendar_today, size: 32.0), title: Text('Calendar')),
+            BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 32.0), title: Text('Profile')),
           ]
       ),
     );

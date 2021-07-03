@@ -11,16 +11,30 @@ class ListScreen extends StatefulWidget
   _ListScreenState createState() => _ListScreenState();
 }
 
-final FirebaseAuth auth = FirebaseAuth.instance;
+// final FirebaseAuth auth = FirebaseAuth.instance;
 
-final User user = auth.currentUser;
-final uid = user.uid;
+// final User user = auth.currentUser;
+// final uid = user.uid;
 
 class _ListScreenState extends State<ListScreen> 
 {
-  logout() 
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user; 
+  var uid;
+
+  void getUser()
   {
-    AuthService.logout();
+    setState(() 
+    {
+      user = auth.currentUser;
+      uid = user.uid;
+    });
+  }
+
+  void initState()
+  {
+    getUser();
+    super.initState();
   }
 
   @override

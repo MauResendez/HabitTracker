@@ -31,10 +31,33 @@ void main() {
         await driver.tap(loginFinder);
         //move into profile page
         //click on the complete button
-        final completeFInder = find.byValueKey('complete-button');
-        await driver.tap(completeFInder);
+        // final completeFInder = find.byValueKey('complete-button');
+        // await driver.tap(completeFInder);
       });
-      test("move around the application", () async {
+      
+      test("move around the application", () async 
+      {
+        await Future.delayed(const Duration(seconds: 5), (){});
+        // final itemscreen = find.byValueKey('items');
+        // await driver.tap(itemscreen);
+        await driver.waitFor(find.byValueKey('BNB'));
+        await driver.tap(find.text('Home'));
+        print('clicked on first');
+        await Future.delayed(const Duration(seconds: 3), (){});
+        await driver.tap(find.text('List'));
+        print('clicked on second too');
+        await Future.delayed(const Duration(seconds: 3), (){});
+        await driver.tap(find.text('Summary'));
+        print('clicked on third too');
+        await Future.delayed(const Duration(seconds: 3), (){});
+        await driver.tap(find.text('Calendar'));
+        print('clicked on fourth too');
+        await Future.delayed(const Duration(seconds: 3), (){});
+        await driver.tap(find.text('Profile'));
+        print('clicked on fifth too');
+        await Future.delayed(const Duration(seconds: 3), (){});
+        await driver.tap(find.text('Home'));
+        print('clicked on first');
         //move into main habit page
         //move into the habit page
         //move into the calender page

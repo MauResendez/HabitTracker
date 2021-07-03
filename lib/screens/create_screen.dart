@@ -9,14 +9,33 @@ class CreateScreen extends StatefulWidget
   _CreateScreenState createState() => _CreateScreenState();
 }
 
-void initState() {}
-
-final FirebaseAuth auth = FirebaseAuth.instance;
-final User user = auth.currentUser;
-final uid = user.uid;
+// final FirebaseAuth auth = FirebaseAuth.instance;
+// final User user = auth.currentUser;
+// final uid = user.uid;
 
 class _CreateScreenState extends State<CreateScreen> 
 {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user; 
+  var uid;
+
+  void getUser()
+  {
+    setState(() 
+    {
+      user = auth.currentUser;
+      uid = user.uid;
+    });
+  }
+
+  void initState()
+  {
+    getUser();
+    startTime = TimeOfDay.now();
+    endTime = TimeOfDay.now();
+    super.initState();
+  }
+
   bool isCurrent = false; //abrahan had added to see if works when save habit
   bool error = false;
   bool monday = false;
@@ -35,13 +54,6 @@ class _CreateScreenState extends State<CreateScreen>
 
   final firestore = FirebaseFirestore.instance;
   final formKey = GlobalKey<FormState>();
-
-  void initState()
-  {
-    startTime = TimeOfDay.now();
-    endTime = TimeOfDay.now();
-    super.initState();
-  }
 
   createHabit() 
   {
@@ -103,6 +115,11 @@ class _CreateScreenState extends State<CreateScreen>
     }
   }
 
+  checkTimeAndDays()
+  {
+
+  }
+
   onSaveStartTime() async
   {
     if(startTime == null)
@@ -133,10 +150,6 @@ class _CreateScreenState extends State<CreateScreen>
     {
       endTime = timeGetter;
     }
-
-    print(endTime);
-
-    // DateFormat('hh:mm aa').format(alarm.alarmDateTime);
   }
 
   Widget errorMessage(bool err)
@@ -158,7 +171,7 @@ class _CreateScreenState extends State<CreateScreen>
   {
     return Scaffold
     (
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomPadding: true,
         appBar: AppBar
         (
           title: Text("Add a new habit"),

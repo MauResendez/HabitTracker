@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:string_validator/string_validator.dart';
 
 class EditScreen extends StatefulWidget 
 {
-  var id;
+  final String id;
 
   EditScreen({Key key, @required this.id}) : super(key: key);
 
@@ -13,38 +14,77 @@ class EditScreen extends StatefulWidget
   _EditScreenState createState() => _EditScreenState();
 }
 
-void initState() {}
-
-final FirebaseAuth auth = FirebaseAuth.instance;
-final User user = auth.currentUser;
-final uid = user.uid;
+// final FirebaseAuth auth = FirebaseAuth.instance;
+// final User user = auth.currentUser;
+// final uid = user.uid;
 
 class _EditScreenState extends State<EditScreen> 
 {
-  bool isCurrent = false; //abrahan had added to see if works when save habit
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user; 
+  var uid;
+  var hid;
+
+  void getUser()
+  {
+    setState(() 
+    {
+      user = auth.currentUser;
+      uid = user.uid;
+      hid = widget.id;
+    });
+  }
+
+  void initState()
+  {
+    getUser();
+    initializeHabit();    
+    super.initState();
+  }
+
   bool error = false;
-  bool monday = false;
-  bool tuesday = false;
-  bool wednesday = false;
-  bool thursday = false;
-  bool friday = false;
-  bool saturday = false;
-  bool sunday = false;
+  bool monday;
+  bool tuesday;
+  bool wednesday;
+  bool thursday;
+  bool friday;
+  bool saturday;
+  bool sunday;
   String habitType = "Default";
   String habitTitle = "";
   String ledColor = "Red";
   TimeOfDay timeGetter;
   TimeOfDay startTime;
   TimeOfDay endTime;
+  DateTime formatStartTime;
+  DateTime formatEndTime;
 
   final firestore = FirebaseFirestore.instance;
   final formKey = GlobalKey<FormState>();
 
-  void initState()
+  initializeHabit() async
   {
-    startTime = TimeOfDay.now();
-    endTime = TimeOfDay.now();
-    super.initState();
+    DocumentSnapshot currentHabit = await FirebaseFirestore.instance.collection('habits').doc(hid).get();
+
+    setState(() 
+    {
+      monday = currentHabit.data()["Days"]["Monday"];
+      tuesday = currentHabit.data()["Days"]["Tuesday"];
+      wednesday = currentHabit.data()["Days"]["Wednesday"];
+      thursday = currentHabit.data()["Days"]["Thursday"];
+      friday = currentHabit.data()["Days"]["Friday"];
+      saturday = currentHabit.data()["Days"]["Saturday"];
+      sunday = currentHabit.data()["Days"]["Sunday"];
+      habitType = currentHabit.data()["Type"];
+      habitTitle = currentHabit.data()["Title"];
+      ledColor = currentHabit.data()["LED Color"];
+      formatStartTime = DateFormat.jm().parse(currentHabit.data()["startTime"]);
+      formatEndTime = DateFormat.jm().parse(currentHabit.data()["endTime"]);
+
+      startTime = TimeOfDay(hour: int.parse(DateFormat("HH:mm").format(formatStartTime).split(":")[0]), minute: int.parse(DateFormat("HH:mm").format(formatStartTime).split(":")[1]));
+      endTime = TimeOfDay(hour: int.parse(DateFormat("HH:mm").format(formatEndTime).split(":")[0]), minute: int.parse(DateFormat("HH:mm").format(formatEndTime).split(":")[1]));
+
+    });
   }
 
   updateHabit() 
@@ -67,32 +107,17 @@ class _EditScreenState extends State<EditScreen>
       "Title": habitTitle,
       "Days": days,
       "UserID": uid,
-      "isCurrent": isCurrent,
-      "inProgress": false,
       "startTime": startTime.format(context),
       "endTime": endTime.format(context),
-      "Completions": 0,
-      "Attempts": 0,
-      "Streak": 0
     };
 
-    if (formKey.currentState.validate()) 
+    if(formKey.currentState.validate()) 
     {
       formKey.currentState.save();
 
       // Take all of the data from form and save it to the database
-      // firestore.collection('/habits').add(data);
 
-      isCurrent = false;
-      habitType = "Default";
-      monday = false;
-      tuesday = false;
-      wednesday = false;
-      thursday = false;
-      friday = false;
-      saturday = false;
-      sunday = false;
-
+      firestore.collection('/habits').doc(hid).update(data);
       Navigator.pop(context);
     }
   }
@@ -128,9 +153,6 @@ class _EditScreenState extends State<EditScreen>
 
     endTime = await showTimePicker(context: context, initialTime: endTime);
     print(endTime);
-    print(uid);
-
-    // DateFormat('hh:mm aa').format(alarm.alarmDateTime);
   }
 
   @override
@@ -158,40 +180,10 @@ class _EditScreenState extends State<EditScreen>
                   decoration: InputDecoration(hintText: "Name of the habit"),
                   validator: (input) => !input.isNotEmpty ? 'Please enter the habit title' : null,
                   onChanged: (input) => habitTitle = input,
+                  initialValue: habitTitle,
                 ),
                 RaisedButton(onPressed: onSaveStartTime, child: Text("Start Time")),
                 RaisedButton(onPressed: onSaveEndTime, child: Text("End Time")),
-                CheckboxListTile
-                (
-                    title: Text("Primary Habit?"),
-                    value: isCurrent,
-                    onChanged: (bool value) 
-                    {
-                      setState(() 
-                      {
-                        isCurrent = value;
-                      });
-                    }, //added this checkbox to have a primary habit change or added.
-                    secondary: Icon(Icons.priority_high)
-                ),
-                // CheckboxListTile
-                // (
-                //     title: Text("Time Based"),
-                //     value: isTimeBased,
-                //     onChanged: (bool value) 
-                //     {
-                //       setState(() 
-                //       {
-                //         //time type
-                //         //make a bool TimeType, if 0 its a timer, if 1 its a stopwatch
-                //         //
-                //         createTimeChoosingTypeDialog(context);
-                //         isTimeBased = value;
-                //       });
-                //     },
-                //     secondary: Icon(Icons.timer)
-                // ),
-                // SizedBox(height: 10),
                 Text("What type of habit do you want?", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
                 SizedBox(height: 10),
                 ListTile
@@ -394,7 +386,7 @@ class _EditScreenState extends State<EditScreen>
                     },
                   ),
                 ),
-                RaisedButton(onPressed: updateHabit, child: Text("Add"))
+                RaisedButton(onPressed: updateHabit, child: Text("Edit"))
               ],
             ),
           ),
