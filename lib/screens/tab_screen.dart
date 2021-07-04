@@ -4,12 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:habittracker/screens/calendar_screen.dart';
 import 'package:habittracker/screens/home_screen.dart';
 import 'package:habittracker/screens/list_screen.dart';
 import 'package:habittracker/screens/profile_screen.dart';
 import 'package:habittracker/screens/summary_screen.dart';
 import 'package:habittracker/services/auth_service.dart';
+import 'package:habittracker/services/local_notification_helper.dart';
 import 'package:intl/intl.dart';
 
 class TabScreen extends StatefulWidget 
@@ -18,13 +20,10 @@ class TabScreen extends StatefulWidget
   _TabScreenState createState() => _TabScreenState();
 }
 
-// final FirebaseAuth auth = FirebaseAuth.instance;
-
-// final User user = auth.currentUser;
-// final uid = user.uid;
-
 class _TabScreenState extends State<TabScreen> 
 {
+  final notifications = FlutterLocalNotificationsPlugin();
+
   FirebaseAuth auth = FirebaseAuth.instance;
   User user; 
   var uid;
@@ -40,11 +39,16 @@ class _TabScreenState extends State<TabScreen>
 
   @override
   void initState()
-  {
+  {  
+    final settingsAndroid = AndroidInitializationSettings('app_icon');
+    final settingsIOS = IOSInitializationSettings(onDidReceiveLocalNotification: (id, title, body, payload) => onSelectNotification(payload));
+
+    notifications.initialize(InitializationSettings(android: settingsAndroid, iOS: settingsIOS), onSelectNotification: onSelectNotification);
+
     getUser();
     timer = Timer.periodic
     (
-      Duration(seconds: 10), (Timer t) =>  
+      Duration(seconds: 3), (Timer t) =>  
       setState
       (()
       {
@@ -84,6 +88,7 @@ class _TabScreenState extends State<TabScreen>
     {
       currentHabitID = currentHabit.docs[0].id;
       FirebaseFirestore.instance.collection("habits").doc(currentHabitID).update({"Attempts": currentHabit.docs[0]["Attempts"] + 1, "inProgress": true});
+      showOneTimeNotification(notifications, title: currentHabit.docs[0]['Title'], body: 'Your habit has started!');
     }
   }
 
@@ -92,10 +97,16 @@ class _TabScreenState extends State<TabScreen>
     if(currentHabit.docs[0]["endTime"] == TimeOfDay.now().format(context))
     {
       currentHabitID = currentHabit.docs[0].id;
+      showOneTimeNotification(notifications, title: currentHabit.docs[0]['Title'], body: 'Your habit is incompleted!');
       currentHabit = null;
       FirebaseFirestore.instance.collection("habits").doc(currentHabitID).update({"inProgress": false});
     }
   }
+
+  Future onSelectNotification(String payload) async => await Navigator.push
+  (
+    context, MaterialPageRoute(builder: (context) => TabScreen()),
+  );
 
   @override
   void dispose() 

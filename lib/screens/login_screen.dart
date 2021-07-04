@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen>
                 key: formKey,
                 child: Padding
                 (
-                  padding: const EdgeInsets.all(50.0),
+                  padding: const EdgeInsets.all(75.0),
                   child: Column
                   (
                     mainAxisSize: MainAxisSize.min,

@@ -10,10 +10,6 @@ class CreateScreen extends StatefulWidget
   _CreateScreenState createState() => _CreateScreenState();
 }
 
-// final FirebaseAuth auth = FirebaseAuth.instance;
-// final User user = auth.currentUser;
-// final uid = user.uid;
-
 class _CreateScreenState extends State<CreateScreen> 
 {
   FirebaseAuth auth = FirebaseAuth.instance;

@@ -120,7 +120,8 @@ class _ListScreenState extends State<ListScreen>
                                   builder: (context) => EditScreen(id: doc.id),
                                 )
                               );
-                            }
+                            },
+                            key: Key('EditButton' + '$index')
                           ),
                           IconButton
                           (
@@ -128,7 +129,8 @@ class _ListScreenState extends State<ListScreen>
                               onPressed: () 
                               {
                                 FirebaseFirestore.instance.collection('habits').doc(doc.id).delete();
-                              }
+                              },
+                              key: Key('DeleteButton' + '$index')
                           ),
                         ],
                       ),

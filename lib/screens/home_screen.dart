@@ -13,11 +13,6 @@ class HomeScreen extends StatefulWidget
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-// final FirebaseAuth auth = FirebaseAuth.instance;
-
-// final User user = auth.currentUser;
-// final uid = user.uid;
-
 class _HomeScreenState extends State<HomeScreen> 
 {
   FirebaseAuth auth = FirebaseAuth.instance;

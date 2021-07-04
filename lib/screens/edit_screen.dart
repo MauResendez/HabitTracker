@@ -122,17 +122,6 @@ class _EditScreenState extends State<EditScreen>
     }
   }
 
-  // TimeOfDay _startTime = TimeOfDay(hour:int.parse(s.split(":")[0]),minute: int.parse(s.split(":")[1]));
-  // 
-  // import 'package:intl/intl.dart';
-// parse date
-// DateTime date= DateFormat.jm().parse("6:45 PM");
-// DateTime date2= DateFormat("hh:mma").parse("6:45PM"); // think this will work better for you
-// // format date
-// print(DateFormat("HH:mm").format(date));
-// print(DateFormat("HH:mm").format(date2));
-
-
   onSaveStartTime() async
   {
     if(startTime == null)
@@ -181,9 +170,22 @@ class _EditScreenState extends State<EditScreen>
                   validator: (input) => !input.isNotEmpty ? 'Please enter the habit title' : null,
                   onChanged: (input) => habitTitle = input,
                   initialValue: habitTitle,
+                  key: Key('HabitTitle')
                 ),
-                RaisedButton(onPressed: onSaveStartTime, child: Text("Start Time")),
-                RaisedButton(onPressed: onSaveEndTime, child: Text("End Time")),
+                Padding
+                (
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row
+                  (
+                    children: <Widget>
+                    [
+                      RaisedButton(onPressed: onSaveStartTime, child: Text("Start Time"), key: Key('StartTime')),
+                      RaisedButton(onPressed: onSaveEndTime, child: Text("End Time"), key: Key('EndTime')),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  ),
+                ),
                 Text("What type of habit do you want?", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
                 SizedBox(height: 10),
                 ListTile
@@ -200,6 +202,7 @@ class _EditScreenState extends State<EditScreen>
                         habitType = value;
                       });
                     },
+                    key: Key('DefaultType')
                   ),
                 ),
                 ListTile
@@ -216,6 +219,7 @@ class _EditScreenState extends State<EditScreen>
                         habitType = value;
                       });
                     },
+                    key: Key('TimerType')
                   ),
                 ),
                 ListTile
@@ -232,6 +236,7 @@ class _EditScreenState extends State<EditScreen>
                         habitType = value;
                       });
                     },
+                    key: Key('StopwatchType')
                   ),
                 ),
                 SizedBox(height: 10),
@@ -247,7 +252,8 @@ class _EditScreenState extends State<EditScreen>
                       {
                         monday = value;
                       });
-                    }
+                    },
+                    key: Key('Monday')
                 ),
                 CheckboxListTile
                 (
@@ -259,7 +265,8 @@ class _EditScreenState extends State<EditScreen>
                       {
                         tuesday = value;
                       });
-                    }
+                    },
+                    key: Key('Tuesday')
                 ),
                 CheckboxListTile
                 (
@@ -271,7 +278,8 @@ class _EditScreenState extends State<EditScreen>
                       {
                         wednesday = value;
                       });
-                    }
+                    },
+                    key: Key('Wednesday')
                 ),
                 CheckboxListTile
                 (
@@ -283,7 +291,8 @@ class _EditScreenState extends State<EditScreen>
                       {
                         thursday = value;
                       });
-                    }
+                    },
+                    key: Key('Thursday')
                 ),
                 CheckboxListTile
                 (
@@ -295,7 +304,8 @@ class _EditScreenState extends State<EditScreen>
                       {
                         friday = value;
                       });
-                    }
+                    },
+                    key: Key('Friday')
                 ),
                 CheckboxListTile(
                     title: Text("Saturday"),
@@ -306,7 +316,8 @@ class _EditScreenState extends State<EditScreen>
                       {
                         saturday = value;
                       });
-                    }
+                    },
+                    key: Key('Saturday')
                 ),
                 CheckboxListTile(
                     title: Text("Sunday"),
@@ -317,7 +328,8 @@ class _EditScreenState extends State<EditScreen>
                       {
                         sunday = value;
                       });
-                    }
+                    },
+                    key: Key('Sunday')
                 ),
                 SizedBox(height: 10),
                 Text("LED Color?", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
@@ -336,6 +348,7 @@ class _EditScreenState extends State<EditScreen>
                         ledColor = value;
                       });
                     },
+                    key: Key('Red')
                   ),
                 ),
                 ListTile
@@ -352,6 +365,7 @@ class _EditScreenState extends State<EditScreen>
                         ledColor = value;
                       });
                     },
+                    key: Key('Green')
                   ),
                 ),
                 ListTile
@@ -368,6 +382,7 @@ class _EditScreenState extends State<EditScreen>
                         ledColor = value;
                       });
                     },
+                    key: Key('Yellow')
                   ),
                 ),
                 ListTile
@@ -384,9 +399,10 @@ class _EditScreenState extends State<EditScreen>
                         ledColor = value;
                       });
                     },
+                    key: Key('Blue')
                   ),
                 ),
-                RaisedButton(onPressed: updateHabit, child: Text("Edit"))
+                RaisedButton(onPressed: updateHabit, child: Text("Edit"), key: Key('Edit'))
               ],
             ),
           ),
