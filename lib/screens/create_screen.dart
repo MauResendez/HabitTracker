@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:string_validator/string_validator.dart';
 
 class CreateScreen extends StatefulWidget 
@@ -191,6 +192,7 @@ class _CreateScreenState extends State<CreateScreen>
                   decoration: InputDecoration(hintText: "Name of the habit"),
                   validator: (input) => !input.isNotEmpty ? 'Please enter the habit title' : null,
                   onChanged: (input) => habitTitle = input,
+                  key: Key('HabitTitle')
                 ),
                 Padding
                 (
@@ -199,8 +201,8 @@ class _CreateScreenState extends State<CreateScreen>
                   (
                     children: <Widget>
                     [
-                      RaisedButton(onPressed: onSaveStartTime, child: Text("Start Time")),
-                      RaisedButton(onPressed: onSaveEndTime, child: Text("End Time")),
+                      RaisedButton(onPressed: onSaveStartTime, child: Text("Start Time"), key: Key('StartTime')),
+                      RaisedButton(onPressed: onSaveEndTime, child: Text("End Time"), key: Key('EndTime')),
                     ],
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -222,6 +224,7 @@ class _CreateScreenState extends State<CreateScreen>
                         habitType = value;
                       });
                     },
+                    key: Key('DefaultType')
                   ),
                 ),
                 ListTile
@@ -238,6 +241,7 @@ class _CreateScreenState extends State<CreateScreen>
                         habitType = value;
                       });
                     },
+                    key: Key('TimerType')
                   ),
                 ),
                 ListTile
@@ -254,6 +258,7 @@ class _CreateScreenState extends State<CreateScreen>
                         habitType = value;
                       });
                     },
+                    key: Key('StopwatchType')
                   ),
                 ),
                 SizedBox(height: 10),
@@ -269,7 +274,8 @@ class _CreateScreenState extends State<CreateScreen>
                       {
                         monday = value;
                       });
-                    }
+                    },
+                    key: Key('Monday')
                 ),
                 CheckboxListTile
                 (
@@ -281,7 +287,8 @@ class _CreateScreenState extends State<CreateScreen>
                       {
                         tuesday = value;
                       });
-                    }
+                    },
+                    key: Key('Tuesday')
                 ),
                 CheckboxListTile
                 (
@@ -293,7 +300,8 @@ class _CreateScreenState extends State<CreateScreen>
                       {
                         wednesday = value;
                       });
-                    }
+                    },                    
+                    key: Key('Wednesday')
                 ),
                 CheckboxListTile
                 (
@@ -305,7 +313,8 @@ class _CreateScreenState extends State<CreateScreen>
                       {
                         thursday = value;
                       });
-                    }
+                    },
+                    key: Key('Thursday')
                 ),
                 CheckboxListTile
                 (
@@ -317,7 +326,8 @@ class _CreateScreenState extends State<CreateScreen>
                       {
                         friday = value;
                       });
-                    }
+                    },
+                    key: Key('Friday')
                 ),
                 CheckboxListTile(
                     title: Text("Saturday"),
@@ -328,7 +338,8 @@ class _CreateScreenState extends State<CreateScreen>
                       {
                         saturday = value;
                       });
-                    }
+                    },
+                    key: Key('Saturday')
                 ),
                 CheckboxListTile(
                     title: Text("Sunday"),
@@ -339,7 +350,8 @@ class _CreateScreenState extends State<CreateScreen>
                       {
                         sunday = value;
                       });
-                    }
+                    },
+                    key: Key('Sunday')
                 ),
                 SizedBox(height: 10),
                 Text("LED Color?", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
@@ -358,6 +370,7 @@ class _CreateScreenState extends State<CreateScreen>
                         ledColor = value;
                       });
                     },
+                    key: Key('Red')
                   ),
                 ),
                 ListTile
@@ -374,6 +387,7 @@ class _CreateScreenState extends State<CreateScreen>
                         ledColor = value;
                       });
                     },
+                    key: Key('Green')
                   ),
                 ),
                 ListTile
@@ -390,6 +404,7 @@ class _CreateScreenState extends State<CreateScreen>
                         ledColor = value;
                       });
                     },
+                    key: Key('Yellow')
                   ),
                 ),
                 ListTile
@@ -406,10 +421,11 @@ class _CreateScreenState extends State<CreateScreen>
                         ledColor = value;
                       });
                     },
+                    key: Key('Blue')
                   ),
                 ),
                 errorMessage(error),
-                RaisedButton(onPressed: createHabit, child: Text("Add")),
+                RaisedButton(onPressed: createHabit, child: Text("Add"), key: Key('Add')),
               ],
             ),
           ),

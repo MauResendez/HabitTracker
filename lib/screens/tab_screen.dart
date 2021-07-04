@@ -164,11 +164,11 @@ class _TabScreenState extends State<TabScreen>
           activeColor: Colors.blue,
           items: 
           [
-            BottomNavigationBarItem(icon: Icon(Icons.home, size: 32.0), title: Text('Home')),
-            BottomNavigationBarItem(icon: Icon(Icons.check_circle_outline, size: 32.0), title: Text('List')),
-            BottomNavigationBarItem(icon: Icon(Icons.bar_chart, size: 32.0), title: Text('Summary')),
-            BottomNavigationBarItem(icon: Icon(Icons.calendar_today, size: 32.0), title: Text('Calendar')),
-            BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 32.0), title: Text('Profile')),
+            BottomNavigationBarItem(icon: Icon(Icons.home, size: 32.0), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.check_circle_outline, size: 32.0), label: 'List'),
+            BottomNavigationBarItem(icon: Icon(Icons.bar_chart, size: 32.0), label: 'Summary'),
+            BottomNavigationBarItem(icon: Icon(Icons.calendar_today, size: 32.0), label: 'Calendar'),
+            BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 32.0), label: 'Profile'),
           ]
       ),
     );

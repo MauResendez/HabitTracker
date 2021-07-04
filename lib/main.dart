@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget
           LoginScreen.id: (context) => LoginScreen(),
           RegisterScreen.id: (context) => RegisterScreen(),
           HomeScreen.id: (context) => HomeScreen(),
-        });
+        }
+    );
   }
 }

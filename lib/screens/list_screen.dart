@@ -148,6 +148,7 @@ class _ListScreenState extends State<ListScreen>
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.blue,
+        key: Key('AddButton')
       ),
     );
   }
